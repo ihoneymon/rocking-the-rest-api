@@ -1,6 +1,14 @@
+#gradle
+.gradle
+
+#java
 *.class
 
 # Package Files #
 *.jar
 *.war
 *.ear
+
+# intellij
+.idea
+*.iml
