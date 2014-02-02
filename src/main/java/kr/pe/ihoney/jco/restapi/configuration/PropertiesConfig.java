@@ -1,6 +1,7 @@
 package kr.pe.ihoney.jco.restapi.configuration;
 
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -16,6 +17,13 @@ import org.springframework.core.io.Resource;
  */
 @Configuration
 public class PropertiesConfig {
+
+    @Bean
+    public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+        PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+        ppc.setLocations(new Resource[] {new ClassPathResource("classpath:/META-INF/config.xml")});
+        return ppc;
+    }
 
     @Bean
     public PropertiesFactoryBean appProperties() {
