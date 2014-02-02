@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -19,11 +20,15 @@ import java.util.Locale;
  * User: ihoneymon
  * Date: 14. 2. 2
  * Time: 오후 1:19
+ * @Configuration: mvc:annotation-driven
+ * @EnableAsync: task:annotation-driven
+ * @ComponentScan: context:component-scan
  */
 
 @Slf4j
 @Configuration
 @EnableWebMvc
+@EnableAsync
 @ComponentScan(basePackages = {"kr.pe.ihoney.jco.restapi.web.controller"})
 @Import(value = {ApplicationConfig.class})
 public class WebApplicationConfig extends WebMvcConfigurerAdapter {

@@ -25,7 +25,6 @@ configurations {
 }
 
 ext {
-    javaVersion = 1.7
     sourceCompatibility = 1.7
     testSourceCompatibility = 1.7
     versions = [
@@ -118,7 +117,7 @@ dependencies {
  */
 task initProject(description: 'Initialization Project') << {
     ext.createDir = {
-        println 'Create Dir : $it'
+        println 'Create Dir : '+ it
         it.mkdirs()
     }
 
