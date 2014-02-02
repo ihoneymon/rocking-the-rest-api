@@ -39,16 +39,12 @@ ext {
     guava:'16.0',
     lombok:'1.12.4',
     h2database:'1.3.175',
-    joda_time:'2.3'
+    joda_time:'2.3',
+    slf4j: '1.7.5'
   ]
 }
 
 sourceSets {
-  main {
-    resources {
-      srcDirs=['src/main/resources', 'src/main/resources/META-INF']
-    }
-  }
   querydsl {
     java {
       srcDirs=['src/main/querydsl']
@@ -68,9 +64,12 @@ dependencies {
     compile 'org.springframework:spring-beans:' + versions.spring_core
 
     //spring mvc
+    compile 'javax.servlet:jstl:1.2'
     compile 'org.springframework:spring-web:' + versions.spring_core
-    
+    compile 'org.springframework:spring-webmvc:' + versions.spring_core
+
     //database
+    compile 'org.springframework:spring-jdbc:' + versions.spring_core
     compile 'org.hibernate:hibernate-c3p0:' + versions.hibernate
     compile 'com.h2database:h2:' + versions.h2database
 
@@ -85,7 +84,7 @@ dependencies {
 
     compile 'com.mysema.querydsl:querydsl-jpa:' + versions.querydsl
     compile 'com.mysema.querydsl:querydsl-apt:' + versions.querydsl
-    
+
     //redis
     compile 'org.springframework.data:spring-data-redis:' + versions.spring_data_redis
 
@@ -100,7 +99,9 @@ dependencies {
     //etc: jackson2
     compile 'com.fasterxml.jackson.core:jackson-databind:' + versions.jackson2
 
-    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'org.slf4j:slf4j-api:' + versions.slf4j
+    runtime 'org.slf4j:jcl-over-slf4j:' + versions.slf4j
+    runtime 'org.slf4j:log4j-over-slf4j:' + versions.slf4j
     testCompile 'junit:junit:4.11'
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 }
@@ -115,9 +116,9 @@ dependencies {
 2. resources directory create
 3. web source directory create
 */
-task initProject(description: "Initialization Project") << {
+task initProject(description: 'Initialization Project') << {
     ext.createDir = {
-        println "Create Dir : $it"
+        println 'Create Dir : $it'
         it.mkdirs()
     }
 
@@ -128,8 +129,8 @@ task initProject(description: "Initialization Project") << {
     sourceSets.querydsl.java.srcDirs.each createDir
 
     createDir webAppDir
-    createDir new File(webAppDir, "/WEB-INF")
-    createDir new File(webAppDir, "/resources")
+    createDir new File(webAppDir, '/WEB-INF')
+    createDir new File(webAppDir, '/resources')
 }
 
 //-- QueryDSL
@@ -138,8 +139,8 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
     classpath = configurations.compile + configurations.querydslapt
     println classpath
     options.compilerArgs = [
-            "-proc:only",
-            "-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+            '-proc:only',
+            '-processor', 'com.mysema.query.apt.jpa.JPAAnnotationProcessor'
     ]
     destinationDir = sourceSets.querydsl.java.srcDirs.iterator().next()
     dependencyCacheDir = compileJava.dependencyCacheDir

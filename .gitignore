@@ -1,9 +1,13 @@
 #gradle
 .gradle
 build
+out
 
 #java
 *.class
+
+#querydsl
+/src/main/querydsl
 
 # Package Files #
 *.jar
