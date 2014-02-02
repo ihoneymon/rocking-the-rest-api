@@ -21,37 +21,37 @@ repositories {
 }
 
 configurations {
-  querydslapt
+    querydslapt
 }
 
 ext {
-  sourceCompatibility=1.7
-  testSourceCompatibility=1.7
-  versions=[
-    spring_core:'4.0.1.RELEASE',
-    hibernate:'4.3.1.Final',
-    hibernate_validator:'5.0.3.Final',
-    spring_data:'1.4.3.RELEASE',
-    spring_data_redis:'1.1.1.RELEASE',
-    querydsl:'3.3.0',
-    jackson:'1.9.13',
-    jackson2:'2.3.1',
-    guava:'16.0',
-    lombok:'1.12.4',
-    h2database:'1.3.175',
-    joda_time:'2.3',
-    slf4j: '1.7.5'
-  ]
+    javaVersion = 1.7
+    sourceCompatibility = 1.7
+    testSourceCompatibility = 1.7
+    versions = [
+            spring_core: '4.0.1.RELEASE',
+            hibernate: '4.3.1.Final',
+            hibernate_validator: '5.0.3.Final',
+            spring_data: '1.4.3.RELEASE',
+            spring_data_redis: '1.1.1.RELEASE',
+            querydsl: '3.3.0',
+            jackson: '1.9.13',
+            jackson2: '2.3.1',
+            guava: '16.0',
+            lombok: '1.12.4',
+            h2database: '1.3.175',
+            joda_time: '2.3',
+            slf4j: '1.7.5'
+    ]
 }
 
 sourceSets {
-  querydsl {
-    java {
-      srcDirs=['src/main/querydsl']
-    } 
-  }
+    querydsl {
+        java {
+            srcDirs = ['src/main/querydsl']
+        }
+    }
 }
-
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
@@ -112,10 +112,10 @@ dependencies {
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 /**
-1. java source directory create
-2. resources directory create
-3. web source directory create
-*/
+ 1. java source directory create
+ 2. resources directory create
+ 3. web source directory create
+ */
 task initProject(description: 'Initialization Project') << {
     ext.createDir = {
         println 'Create Dir : $it'
