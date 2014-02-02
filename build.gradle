@@ -121,7 +121,7 @@ dependencies {
  */
 task initProject(description: 'Initialization Project') << {
     ext.createDir = {
-        println 'Create Dir : $it'
+        println 'Create Dir : '+ it
         it.mkdirs()
     }
 
