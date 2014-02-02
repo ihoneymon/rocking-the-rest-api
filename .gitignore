@@ -16,3 +16,12 @@ out
 # intellij
 .idea
 *.iml
+/bin
+/out
+*.ipr
+*.iws
+
+#eclipse
+.settings
+.classpath
+.project

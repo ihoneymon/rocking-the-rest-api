@@ -13,7 +13,6 @@ import org.springframework.core.io.Resource;
  * User: ihoneymon
  * Date: 14. 2. 2
  * Time: 오후 2:09
- * To change this template use File | Settings | File Templates.
  */
 @Configuration
 public class PropertiesConfig {
@@ -21,7 +20,7 @@ public class PropertiesConfig {
     @Bean
     public PropertiesFactoryBean appProperties() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        Resource[] resources = {new ClassPathResource("classpath:/META-INF/config.xml")};
+        Resource[] resources = {new ClassPathResource("/META-INF/config.xml")};
         propertiesFactoryBean.setLocations(resources);
         propertiesFactoryBean.setIgnoreResourceNotFound(true);
         return propertiesFactoryBean;
@@ -30,7 +29,7 @@ public class PropertiesConfig {
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("classpath:/META-INF/properties/view.message");
+        messageSource.setBasenames("/META-INF/properties/view.message");
         messageSource.setCacheSeconds(10);
         return messageSource;
     }

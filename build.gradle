@@ -10,6 +10,8 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'idea'
+apply plugin: 'eclipse-wtp'
 
 version = '1.0'
 
@@ -25,9 +27,7 @@ configurations {
 }
 
 ext {
-    javaVersion = 1.7
-    sourceCompatibility = 1.7
-    testSourceCompatibility = 1.7
+    javaVersion = '1.7'
     versions = [
             spring_core: '4.0.1.RELEASE',
             hibernate: '4.3.1.Final',
@@ -44,6 +44,9 @@ ext {
             slf4j: '1.7.5'
     ]
 }
+
+sourceCompatibility = javaVersion
+targetCompatibility = javaVersion
 
 sourceSets {
     querydsl {
