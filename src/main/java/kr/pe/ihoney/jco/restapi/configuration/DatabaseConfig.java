@@ -1,6 +1,9 @@
 package kr.pe.ihoney.jco.restapi.configuration;
 
+import com.jolbox.bonecp.BoneCPDataSource;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -12,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+
 import java.beans.PropertyVetoException;
 import java.util.Properties;
 
@@ -26,13 +30,45 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = {"kr.pe.ihoney.jco.restapi.repository"})
 @EnableTransactionManagement
 public class DatabaseConfig {
+    @Value("${database.password}")
+    private String PROPERTY_DATABASE_PASSWORD;
+    @Value("${database.username}")
+    private String PROPERTY_DATABASE_USERNAME;
+    @Value("${database.url}")
+    private String PROPERTY_DATABASE_URL;
+    @Value("${database.class}")
+    private String PROPERTY_DATABASE_CLASS;
+    @Value("${hibernate.format_sql}")
+    private String HIBERNATE_FORMAT_SQL;
+    @Value("${hibernate.show_sql}")
+    private String HIBERNATE_SHOW_SQL;
+    @Value("${hibernate.hbm2ddl.auto}")
+    private String HIBERNATE_HBM2DDL_AUTO;
+    @Value("${hibernate.dialect}")
+    private String HIBERNATE_DIALECT;
+    
+    private static final String SCAN_TARGET_PACKAGE = "kr.pe.ihoney.jco.restapi.domain";
+    private static final String PERSISTENCE_UNIT_NAME = "rocking-the-rest-api";
+    private static final String PROPERTY_NAME_HIBERNATE_FORMAT_SQL = "hibernate.format_sql";
+    private static final String PROPERTY_NAME_HIBERNATE_SHOW_SQL = "hibernate.show_sql";
+    private static final String PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO = "hibernate.hbm2ddl.auto";
+    private static final String PROPERTY_NAME_HIBERNATE_DIALECT = "hibernate.dialect";
+
     @Bean
-    public DataSource dataSource() throws PropertyVetoException {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass("org.h2.Driver");
-        dataSource.setUser("sa");
-        dataSource.setPassword("");
-        dataSource.setJdbcUrl("jdbc:h2:file:~/.h2database/rocking_the_rest_api");
+    public DataSource dataSource() {
+        BoneCPDataSource dataSource = new BoneCPDataSource();
+        dataSource.setDriverClass(PROPERTY_DATABASE_CLASS);
+        dataSource.setJdbcUrl(PROPERTY_DATABASE_URL);
+        dataSource.setUser(PROPERTY_DATABASE_USERNAME);
+        dataSource.setPassword(PROPERTY_DATABASE_PASSWORD);
+        dataSource.setIdleConnectionTestPeriodInMinutes(60);
+        dataSource.setIdleMaxAgeInMinutes(420);
+        dataSource.setMaxConnectionsPerPartition(30);
+        dataSource.setMinConnectionsPerPartition(10);
+        dataSource.setPartitionCount(3);
+        dataSource.setAcquireIncrement(5);
+        dataSource.setStatementsCacheSize(100);
+        
         return dataSource;
     }
 
@@ -43,8 +79,9 @@ public class DatabaseConfig {
         Properties jpaProperties = getJpaProperties();
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 
-        factory.setPersistenceUnitName("rocking-the-rest-api");
-        factory.setPackagesToScan("kr.pe.ihoney.jco.restapi.domain");
+        factory.setPersistenceUnitName(PERSISTENCE_UNIT_NAME);
+        factory.setPackagesToScan(SCAN_TARGET_PACKAGE);
+        factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setJpaProperties(jpaProperties);
         factory.afterPropertiesSet();
@@ -54,10 +91,10 @@ public class DatabaseConfig {
 
     private Properties getJpaProperties() {
         Properties jpaProperties = new Properties();
-        jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.H2Dialect");
-        jpaProperties.setProperty("hibernate.hbm2ddl.auto", "true");
-        jpaProperties.setProperty("hibernate.show_sql", "true");
-        jpaProperties.setProperty("hibernate.format_sql", "true");
+        jpaProperties.setProperty(PROPERTY_NAME_HIBERNATE_DIALECT, HIBERNATE_DIALECT);
+        jpaProperties.setProperty(PROPERTY_NAME_HIBERNATE_HBM2DDL_AUTO, HIBERNATE_HBM2DDL_AUTO);
+        jpaProperties.setProperty(PROPERTY_NAME_HIBERNATE_SHOW_SQL, HIBERNATE_SHOW_SQL);
+        jpaProperties.setProperty(PROPERTY_NAME_HIBERNATE_FORMAT_SQL, HIBERNATE_FORMAT_SQL);
         return jpaProperties;
     }
 

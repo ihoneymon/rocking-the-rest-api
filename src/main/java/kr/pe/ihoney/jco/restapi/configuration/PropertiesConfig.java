@@ -18,17 +18,21 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class PropertiesConfig {
 
+    /**
+     * PropertyPlaceholder는 다른 빈들보다 먼저 생성되어야 하기에 static 선언
+     * @return PropertyPlaceholderConfigurer
+     */
     @Bean
     public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-        ppc.setLocations(new Resource[] {new ClassPathResource("classpath:/META-INF/config.xml")});
+        ppc.setLocations(new Resource[] {new ClassPathResource("/META-INF/application-config.xml")});
         return ppc;
     }
 
     @Bean
     public PropertiesFactoryBean appProperties() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        Resource[] resources = {new ClassPathResource("/META-INF/config.xml")};
+        Resource[] resources = {new ClassPathResource("/META-INF/application-config.xml")};
         propertiesFactoryBean.setLocations(resources);
         propertiesFactoryBean.setIgnoreResourceNotFound(true);
         return propertiesFactoryBean;
@@ -38,7 +42,7 @@ public class PropertiesConfig {
     public ReloadableResourceBundleMessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasenames("/META-INF/properties/view.message");
-        messageSource.setCacheSeconds(10);
+        messageSource.setCacheSeconds(5);
         return messageSource;
     }
 

@@ -2,11 +2,13 @@ package kr.pe.ihoney.jco.restapi.web.coniguration;
 
 import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfig;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
@@ -28,9 +30,7 @@ import java.util.Locale;
 @Slf4j
 @Configuration
 @EnableWebMvc
-@EnableAsync
-@ComponentScan(basePackages = {"kr.pe.ihoney.jco.restapi.web.controller"})
-@Import(value = {ApplicationConfig.class})
+@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web", excludeFilters = {@ComponentScan.Filter(Configuration.class)})
 public class WebApplicationConfig extends WebMvcConfigurerAdapter {
 
     @Bean

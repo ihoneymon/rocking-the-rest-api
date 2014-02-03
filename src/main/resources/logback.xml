@@ -7,8 +7,12 @@
         </layout>
     </appender>
 
-    <logger name="org.springframework" level="debug"/>
-    <logger name="org.hibernate" level="debug"/>
+    <logger name="kr.pe.ihoney.jco.restapi" level="debug"/>
+    
+    <logger name="org.springframework.core" level="info"/>
+    <logger name="org.springframework.context" level="info"/>
+    <logger name="org.springframework.web" level="info"/>
+    <logger name="org.hibernate" level="info"/>
     
     <root level="debug">
         <appender-ref ref="STDOUT" />
