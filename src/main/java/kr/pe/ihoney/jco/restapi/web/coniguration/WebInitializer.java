@@ -1,6 +1,6 @@
 package kr.pe.ihoney.jco.restapi.web.coniguration;
 
-import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfig;
+import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfiguration;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
@@ -23,11 +23,11 @@ public class WebInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext applicationContext = new AnnotationConfigWebApplicationContext();
-        applicationContext.register(ApplicationConfig.class);
+        applicationContext.register(ApplicationConfiguration.class);
         servletContext.addListener(new ContextLoaderListener(applicationContext));
 
         AnnotationConfigWebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext();
-        webApplicationContext.register(WebApplicationConfig.class);
+        webApplicationContext.register(WebApplicationConfiguration.class);
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(webApplicationContext));
         dispatcher.setLoadOnStartup(1);

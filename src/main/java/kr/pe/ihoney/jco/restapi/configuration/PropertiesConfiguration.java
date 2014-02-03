@@ -16,7 +16,7 @@ import org.springframework.core.io.Resource;
  * Time: 오후 2:09
  */
 @Configuration
-public class PropertiesConfig {
+public class PropertiesConfiguration {
 
     /**
      * PropertyPlaceholder는 다른 빈들보다 먼저 생성되어야 하기에 static 선언

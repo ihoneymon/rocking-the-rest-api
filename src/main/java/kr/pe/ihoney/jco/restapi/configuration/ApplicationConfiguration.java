@@ -12,8 +12,8 @@ import org.springframework.stereotype.Controller;
  * Time: 오후 1:18
  */
 @Configuration
-@Import(value={DatabaseConfig.class, PropertiesConfig.class})
+@Import(value={DatabaseConfiguration.class, PropertiesConfiguration.class})
 @ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi", excludeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(Configuration.class)})
-public class ApplicationConfig {
+public class ApplicationConfiguration {
 
 }

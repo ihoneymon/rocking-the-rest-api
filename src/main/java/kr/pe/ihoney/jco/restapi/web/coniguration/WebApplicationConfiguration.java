@@ -1,6 +1,6 @@
 package kr.pe.ihoney.jco.restapi.web.coniguration;
 
-import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfig;
+import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfiguration;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ import java.util.Locale;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web", excludeFilters = {@ComponentScan.Filter(Configuration.class)})
-public class WebApplicationConfig extends WebMvcConfigurerAdapter {
+public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Bean
     InternalResourceViewResolver internalResourceViewResolver() {

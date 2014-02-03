@@ -29,7 +29,7 @@ import java.util.Properties;
 @Configuration
 @EnableJpaRepositories(basePackages = {"kr.pe.ihoney.jco.restapi.repository"})
 @EnableTransactionManagement
-public class DatabaseConfig {
+public class DatabaseConfiguration {
     @Value("${database.password}")
     private String PROPERTY_DATABASE_PASSWORD;
     @Value("${database.username}")
