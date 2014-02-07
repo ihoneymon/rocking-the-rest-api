@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-	<comment>rocking-the-rest-api Korean view.message</comment>
+	<comment>rocking-the-rest-api English view.message</comment>
 	
-	<entry key="view.msg.greeting">안녕하세요!</entry>
+	<entry key="view.msg.greeting">Hello!</entry>
 </properties>

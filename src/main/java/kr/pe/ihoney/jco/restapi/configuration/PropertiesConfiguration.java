@@ -1,5 +1,7 @@
 package kr.pe.ihoney.jco.restapi.configuration;
 
+import kr.pe.ihoney.jco.restapi.common.spring.ResourceBundleMessageSource;
+
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -10,29 +12,31 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 2:09
+ * Application Properties Configuration
  */
 @Configuration
 public class PropertiesConfiguration {
 
+    private static final String META_INF_APPLICATION_CONFIG_XML = "/META-INF/application-config.xml";
+    private static final String META_INF_PROPERTIES_VIEW_MESSAGE = "classpath:/META-INF/properties/view.message";
+    private static final String DEFAULT_ENCODING = "UTF-8";
+
     /**
      * PropertyPlaceholder는 다른 빈들보다 먼저 생성되어야 하기에 static 선언
+     * 
      * @return PropertyPlaceholderConfigurer
      */
     @Bean
     public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
         PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-        ppc.setLocations(new Resource[] {new ClassPathResource("/META-INF/application-config.xml")});
+        ppc.setLocations(new Resource[] { new ClassPathResource(META_INF_APPLICATION_CONFIG_XML) });
         return ppc;
     }
 
     @Bean
     public PropertiesFactoryBean appProperties() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        Resource[] resources = {new ClassPathResource("/META-INF/application-config.xml")};
+        Resource[] resources = { new ClassPathResource(META_INF_APPLICATION_CONFIG_XML) };
         propertiesFactoryBean.setLocations(resources);
         propertiesFactoryBean.setIgnoreResourceNotFound(true);
         return propertiesFactoryBean;
@@ -40,10 +44,15 @@ public class PropertiesConfiguration {
 
     @Bean
     public ReloadableResourceBundleMessageSource messageSource() {
-        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasenames("/META-INF/properties/view.message");
+        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setBasenames(getBaseNames());
+        messageSource.setDefaultEncoding(DEFAULT_ENCODING);
         messageSource.setCacheSeconds(5);
         return messageSource;
+    }
+
+    private String[] getBaseNames() {
+        return new String[] { META_INF_PROPERTIES_VIEW_MESSAGE };
     }
 
     @Bean

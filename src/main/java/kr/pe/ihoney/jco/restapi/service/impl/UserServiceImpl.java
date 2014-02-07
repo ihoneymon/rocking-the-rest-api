@@ -1,10 +1,11 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
-import kr.pe.ihoney.jco.restapi.common.RestApiException;
+import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.repository.UserRepository;
 import kr.pe.ihoney.jco.restapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
