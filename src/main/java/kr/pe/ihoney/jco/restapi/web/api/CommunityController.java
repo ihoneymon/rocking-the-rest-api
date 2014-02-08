@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.controller;
+package kr.pe.ihoney.jco.restapi.web.api;
 
 import kr.pe.ihoney.jco.restapi.service.CommunityService;
 import lombok.extern.slf4j.Slf4j;

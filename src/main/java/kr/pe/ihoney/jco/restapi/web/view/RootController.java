@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.controller;
+package kr.pe.ihoney.jco.restapi.web.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
