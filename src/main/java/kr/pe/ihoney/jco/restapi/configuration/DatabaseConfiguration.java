@@ -1,7 +1,8 @@
 package kr.pe.ihoney.jco.restapi.configuration;
 
-import com.jolbox.bonecp.BoneCPDataSource;
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,11 +14,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
-import java.beans.PropertyVetoException;
-import java.util.Properties;
+import com.jolbox.bonecp.BoneCPDataSource;
 
 /**
  * Created with IntelliJ IDEA.

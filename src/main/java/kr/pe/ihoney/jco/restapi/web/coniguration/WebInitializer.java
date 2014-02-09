@@ -26,13 +26,25 @@ public class WebInitializer implements WebApplicationInitializer {
         applicationContext.register(ApplicationConfiguration.class);
         servletContext.addListener(new ContextLoaderListener(applicationContext));
 
-        AnnotationConfigWebApplicationContext webApplicationContext = new AnnotationConfigWebApplicationContext();
-        webApplicationContext.register(WebApplicationConfiguration.class);
-
-        ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(webApplicationContext));
-        dispatcher.setLoadOnStartup(1);
-        dispatcher.addMapping("/");
-        dispatcher.setInitParameter("dispatchOptionsRequest", "true");
+        /**
+         * appApiServlet 생성
+         */
+        AnnotationConfigWebApplicationContext webApplicationApiContext = new AnnotationConfigWebApplicationContext();
+        webApplicationApiContext.register(WebApplicationApiConfiguration.class);
+        ServletRegistration.Dynamic appApiServlet = servletContext.addServlet("appApiServlet", new DispatcherServlet(webApplicationApiContext));
+        appApiServlet.addMapping("/api/*");
+        appApiServlet.setLoadOnStartup(1);
+        appApiServlet.setInitParameter("dispatchOptionsRequest", "true");
+        
+        /**
+         * appViewServlet 생성
+         */
+        AnnotationConfigWebApplicationContext webApplicationViewContext = new AnnotationConfigWebApplicationContext();
+        webApplicationViewContext.register(WebApplicationViewConfiguration.class);
+        ServletRegistration.Dynamic appViewServlet = servletContext.addServlet("appViewServlet", new DispatcherServlet(webApplicationViewContext));
+        appViewServlet.addMapping("/view/*");
+        appViewServlet.setLoadOnStartup(2);
+        appViewServlet.setInitParameter("dispatchOptionsRequest", "true");
 
         /**
          * HiddenHttpMethodFilter

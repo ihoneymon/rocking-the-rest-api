@@ -4,30 +4,49 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.accept.ContentNegotiationManager;
-import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.google.common.collect.Lists;
 
+/**
+ * View 설정 context.xml
+ * 
+ * @Configuration: mvc:annotation-driven
+ * @EnableAsync: task:annotation-driven
+ * @ComponentScan: context:component-scan
+ */
 @Configuration
-public class ResolverConfiguration extends WebMvcConfigurerAdapter {
+@EnableWebMvc
+@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web.view")
+public class WebApplicationViewConfiguration extends WebMvcConfigurerAdapter {
 
-    @Bean
-    BeanNameViewResolver beanNameViewResolver() {
-        BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
-        beanNameViewResolver.setOrder(0);
-        return beanNameViewResolver;
+    private static final String PARAM_NAME = "lang";
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/resources/").addResourceLocations("/resources/**");
     }
 
+    @Override
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+        configurer.enable();
+    }
+    
     @Bean
     ContentNegotiatingViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
@@ -44,11 +63,10 @@ public class ResolverConfiguration extends WebMvcConfigurerAdapter {
         return viewResolvers;
     }
 
-    private ViewResolver getInternalResourceViewResolver() {
+    private InternalResourceViewResolver getInternalResourceViewResolver() {
         InternalResourceViewResolver internalResourceViewResolver = new InternalResourceViewResolver();
         internalResourceViewResolver.setPrefix("/WEB-INF/views/");
         internalResourceViewResolver.setSuffix(".jsp");
-        internalResourceViewResolver.setOrder(2);
         return internalResourceViewResolver;
     }
 
@@ -61,11 +79,22 @@ public class ResolverConfiguration extends WebMvcConfigurerAdapter {
     private View getMappingJackson2JsonView() {
         return new MappingJackson2JsonView();
     }
-
+    
     @Bean
-    LocaleResolver localeResolver() {
+    SessionLocaleResolver localReslover() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-        localeResolver.setDefaultLocale(Locale.KOREA);
+        localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
+    }
+    
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(getLocaleChangeInterceptor());
+    }
+
+    private HandlerInterceptor getLocaleChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName(PARAM_NAME);
+        return localeChangeInterceptor;
     }
 }
