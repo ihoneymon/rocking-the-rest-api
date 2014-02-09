@@ -7,10 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 12:10
+ * 
+ * @author ihoneymon
+ *
  */
 @Slf4j
 @Controller

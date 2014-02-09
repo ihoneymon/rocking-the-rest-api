@@ -7,15 +7,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.accept.ContentNegotiationManager;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -24,7 +21,9 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import com.google.common.collect.Lists;
 
 /**
- * View 설정 context.xml
+ * View 설정 context.xml<br/>
+ * 빈Bean의 이름은 관례적으로 메서드명을 가지고서 빈의 이름을 설정하도록 할까?
+ * 혹은 @Bean 에 이름을 정의를 할까?
  * 
  * @Configuration: mvc:annotation-driven
  * @EnableAsync: task:annotation-driven
@@ -32,10 +31,8 @@ import com.google.common.collect.Lists;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web.view")
+@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web.view", excludeFilters={})
 public class WebApplicationViewConfiguration extends WebMvcConfigurerAdapter {
-
-    private static final String PARAM_NAME = "lang";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -85,16 +82,5 @@ public class WebApplicationViewConfiguration extends WebMvcConfigurerAdapter {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
-    }
-    
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(getLocaleChangeInterceptor());
-    }
-
-    private HandlerInterceptor getLocaleChangeInterceptor() {
-        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-        localeChangeInterceptor.setParamName(PARAM_NAME);
-        return localeChangeInterceptor;
     }
 }

@@ -54,6 +54,9 @@ public class Post {
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
+    @Getter
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
         
     public Post(String title, String article, User createdBy) {
         this.title = title;

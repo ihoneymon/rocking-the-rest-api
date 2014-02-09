@@ -18,7 +18,8 @@ import org.springframework.core.io.Resource;
 public class PropertiesConfiguration {
 
     private static final String META_INF_APPLICATION_CONFIG_XML = "/META-INF/application-config.xml";
-    private static final String META_INF_PROPERTIES_VIEW_MESSAGE = "classpath:/META-INF/properties/view.message";
+    private static final String VIEW_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/view.message";
+    private static final String SYSTEM_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/system.message";
     private static final String DEFAULT_ENCODING = "UTF-8";
 
     /**
@@ -52,7 +53,7 @@ public class PropertiesConfiguration {
     }
 
     private String[] getBaseNames() {
-        return new String[] { META_INF_PROPERTIES_VIEW_MESSAGE };
+        return new String[] { VIEW_MESSAGE_PROPERTIES, SYSTEM_MESSAGE_PROPERTIES };
     }
 
     @Bean

@@ -8,7 +8,7 @@ import com.google.common.collect.Sets;
 
 public enum PostType implements Ordered {
     PRIVATE("code.post-type.private", 1), 
-    OPEN("code.post-type.open", 2), 
+    PUBLIC("code.post-type.public", 2), 
     PUBLISH("code.post-type.publish", 3);
 
     private String code;

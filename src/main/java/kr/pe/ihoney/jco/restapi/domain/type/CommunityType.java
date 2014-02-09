@@ -3,7 +3,8 @@ package kr.pe.ihoney.jco.restapi.domain.type;
 import org.springframework.core.Ordered;
 
 public enum CommunityType implements Ordered {
-    PUBLIC("code.community-type.public", 1), PRIVATE("code.community-type.private", 2);
+    PRIVATE("code.community-type.private", 1),
+    PUBLIC("code.community-type.public", 2); 
 
     private String code;
     private int order;

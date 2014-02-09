@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<comment>rocking-the-rest-api Korean view.message</comment>
+	
+	<!-- CodeType Message -->
+	<entry key="code.post-type.private">비공개</entry>
+	<entry key="code.post-type.public">공개</entry>
+	<entry key="code.post-type.publish">출판</entry>
+	<!-- CommunityType Message -->
+	<entry key="code.community-type.private">비공개</entry>
+	<entry key="code.community-type.public">공개</entry>
+</properties>

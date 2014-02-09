@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<comment>rocking-the-rest-api English view.message</comment>
+	
+	<!-- CodeType Message -->
+	<entry key="code.post-type.private">Private</entry>
+	<entry key="code.post-type.public">Public</entry>
+	<entry key="code.post-type.publish">Publish</entry>
+	<!-- CommunityType Message -->
+	<entry key="code.community-type.private">Private</entry>
+	<entry key="code.community-type.public">Public</entry>
+</properties>

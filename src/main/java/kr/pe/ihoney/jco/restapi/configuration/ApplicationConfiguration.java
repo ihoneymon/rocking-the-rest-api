@@ -6,14 +6,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Controller;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 1:18
+ * application-context.xml 대체
+ * @author ihoneymon
+ *
  */
 @Configuration
 @Import(value={DatabaseConfiguration.class, PropertiesConfiguration.class})
-@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi", excludeFilters = {@ComponentScan.Filter(Controller.class), @ComponentScan.Filter(Configuration.class)})
+@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi", excludeFilters = {
+        @ComponentScan.Filter(Controller.class), @ComponentScan.Filter(Configuration.class) })
 public class ApplicationConfiguration {
 
 }

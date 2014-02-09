@@ -18,6 +18,7 @@ import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.format.support.FormattingConversionServiceFactoryBean;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.BeanNameViewResolver;
@@ -50,7 +52,8 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
 
     @Inject
     private EntityManagerFactory entityManagerFactory;
-    
+    private String PARAM_NAME = "lang";
+
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
@@ -71,7 +74,7 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
         viewResolvers.add(beanNameViewResolver());
         return viewResolvers;
     }
-    
+
     private BeanNameViewResolver beanNameViewResolver() {
         BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
         return beanNameViewResolver;
@@ -86,16 +89,26 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
     private View getMappingJackson2JsonView() {
         return new MappingJackson2JsonView();
     }
-    
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(new String[] {"/communities/**", "/users/**", "/posts/**"});
+        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
+                new String[] { "/communities/**", "/users/**", "/posts/**" });
         registry.addInterceptor(webContentInterceptor());
+        registry.addInterceptor(localeChangeInterceptor());
+    }
+    
+    private HandlerInterceptor localeChangeInterceptor() {
+        LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+        localeChangeInterceptor.setParamName(PARAM_NAME);
+        return localeChangeInterceptor;
     }
 
-
     /**
-     * 참조: http://zeroturnaround.com/rebellabs/your-next-java-web-app-less-xml-no-long-restarts-fewer-hassles-part-2/
+     * 참조:
+     * http://zeroturnaround.com/rebellabs/your-next-java-web-app-less-xml-no
+     * -long-restarts-fewer-hassles-part-2/
+     * 
      * @return
      */
     private OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
@@ -112,9 +125,12 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
         webContentInterceptor.setUseCacheControlHeader(true);
         return webContentInterceptor;
     }
-    
+
     /**
-     * <a href="http://stackoverflow.com/questions/11273443/how-to-configure-spring-conversionservice-with-java-config">ConversionService</a>
+     * <a href=
+     * "http://stackoverflow.com/questions/11273443/how-to-configure-spring-conversionservice-with-java-config"
+     * >ConversionService</a>
+     * 
      * @return
      */
     @Bean
@@ -130,7 +146,7 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
         converters.add(new LongIdTypeEntityConverter());
         return converters;
     }
-    
+
     @Bean
     ObjectMapper objectMapper() {
         return new HibernateAwareObjectMapper();
