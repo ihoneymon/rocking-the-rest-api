@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.util.Assert;
+
 import kr.pe.ihoney.jco.restapi.domain.type.PostType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -26,13 +28,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 포스트 도메인
+ * 
  * @author ihoneymon
- *
+ * 
  */
 @Entity
-@NoArgsConstructor(access=AccessLevel.PROTECTED)
-@EqualsAndHashCode(of={"title", "createdDate", "createdBy"})
-@ToString(of={"id", "type", "title", "article", "createdDate", "createdBy"})
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = { "title", "createdDate", "createdBy" })
+@ToString(of = { "id", "type", "title", "article", "createdDate", "createdBy" })
 @JsonIgnoreProperties
 public class Post {
     @Getter
@@ -43,10 +46,8 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private PostType type;
     @Getter
-    @Setter
     private String title;
     @Getter
-    @Setter
     private String article;
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,12 +58,31 @@ public class Post {
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
-        
+
     public Post(String title, String article, User createdBy) {
-        this.title = title;
-        this.article = article;
-        this.createdBy = createdBy;
+        setTitle(title);
+        setArticle(article);
+        setCreatedBy(createdBy);
         this.type = PostType.PRIVATE;
         this.createdDate = Calendar.getInstance().getTime();
     }
+
+    public Post setTitle(String title) {
+        Assert.hasText(title, "post.require.title");
+        this.title = title;
+        return this;
+    }
+
+    public Post setArticle(String article) {
+        Assert.hasText(article, "post.require.article");
+        this.article = article;
+        return this;
+    }
+
+    public Post setCreatedBy(User createdBy) {
+        Assert.notNull(createdBy, "post.require.created-by");
+        this.createdBy = createdBy;
+        return this;
+    }
+
 }

@@ -20,20 +20,22 @@ import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
+
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * 커뮤니티 도메인
+ * 
  * @author ihoneymon
- *
+ * 
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of="name")
-@ToString(of={"id", "name", "type", "createdBy", "createdDate"})
+@EqualsAndHashCode(of = "name")
+@ToString(of = { "id", "name", "type", "manager", "createdDate" })
 @JsonIgnoreProperties
 public class Community {
     @Getter
@@ -41,23 +43,39 @@ public class Community {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Getter
-    @Setter
-    @Column(unique=true)
-    private String name;
+    @Column(unique = true, nullable = false)
+    private String name;            //커뮤니티명
     @Getter
     @Enumerated(EnumType.STRING)
-    private CommunityType type;
+    @Column(nullable = false)
+    private CommunityType type;     //커뮤니티유형
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    private User createdBy;
+    private User manager;           //관리자
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private Date createdDate;       //생성일
 
-    public Community(String name, CommunityType type, User createdBy) {
-        this.name = name;
-        this.type = type;
-        this.createdBy = createdBy;
+    public Community(String name, CommunityType type, User manager) {
+        setName(name);
+        setType(type);
+        setManager(manager);
         this.createdDate = Calendar.getInstance().getTime();
     }
+
+    public void setName(String name) {
+        Assert.hasText(name, "community.require.name");
+        this.name = name;
+    }
+
+    private void setType(CommunityType type) {
+        Assert.notNull(type);
+        this.type = type;
+    }
+
+    public void setManager(User manager) {
+        Assert.notNull(manager);
+        this.manager = manager;
+    }
+
 }
