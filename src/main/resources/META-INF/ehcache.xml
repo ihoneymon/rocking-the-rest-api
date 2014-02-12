@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xsi:noNamespaceSchemaLocation="ehcache.xsd"
+	updateCheck="true" monitoring="autodetect" dynamicConfig="true"
+	maxBytesLocalHeap="150M">
+
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache
+		maxBytesLocalHeap="150M" eternal="false" timeToIdleSeconds="120"
+		timeToLiveSeconds="120" overflowToDisk="true" maxElementsOnDisk="10000000"
+		diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
+		memoryStoreEvictionPolicy="LRU" />
+		
+	<cache name="communityCache"
+		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+
+	<cache name="userCache"
+		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+		
+	<cache name="postCache"
+		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+</ehcache>

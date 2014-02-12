@@ -29,22 +29,23 @@ configurations {
 ext {
     javaVersion = '1.7'
     versions = [
-            spring_core: '4.0.1.RELEASE',
-            hibernate: '4.3.1.Final',
-            hibernate_validator: '5.0.3.Final',
-            bonecp: '0.8.0.RELEASE',
-            spring_data: '1.4.3.RELEASE',
-            spring_data_redis: '1.1.1.RELEASE',
-            querydsl: '3.3.0',
-            jackson: '1.9.13',
-            jackson2: '2.3.1',
-            guava: '16.0',
-            lombok: '1.12.4',
-            h2database: '1.3.175',
-            joda_time: '2.3',
-            slf4j: '1.7.5',
-            logback: '1.1.0',
-            modelmapper: '0.6.3'
+        spring_core: '4.0.1.RELEASE',
+        hibernate: '4.3.1.Final',
+        hibernate_validator: '5.0.3.Final',
+        bonecp: '0.8.0.RELEASE',
+        spring_data: '1.4.3.RELEASE',
+        spring_data_redis: '1.1.1.RELEASE',
+        querydsl: '3.3.0',
+        jackson: '1.9.13',
+        jackson2: '2.3.1',
+        guava: '16.0',
+        lombok: '1.12.4',
+        h2database: '1.3.175',
+        joda_time: '2.3',
+        slf4j: '1.7.5',
+        logback: '1.1.0',
+        modelmapper: '0.6.3',
+        ehcache: '2.6.8'
     ]
 }
 
@@ -68,8 +69,10 @@ dependencies {
     compile 'org.springframework:spring-context:' + versions.spring_core
     compile 'org.springframework:spring-context-support:' + versions.spring_core
     compile 'org.springframework:spring-beans:' + versions.spring_core
+    compile 'org.springframework:spring-test:' + versions.spring_core
 
-    //spring mvc
+    //spring mvc & web
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
     compile 'javax.servlet:jstl:1.2'
     compile 'org.springframework:spring-web:' + versions.spring_core
     compile 'org.springframework:spring-webmvc:' + versions.spring_core
@@ -100,7 +103,10 @@ dependencies {
     compile 'com.google.guava:guava:' + versions.guava
     compile 'joda-time:joda-time:' + versions.joda_time
     compile 'org.projectlombok:lombok:' + versions.lombok
-
+    
+    //etc:ehcache
+    compile 'net.sf.ehcache:ehcache-core:' + versions.ehcache
+    
 	//etc: modelMapper
 	compile 'org.modelmapper:modelmapper:' + versions.modelmapper
 	
@@ -111,12 +117,12 @@ dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:' + versions.jackson2
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-hibernate4:' + versions.jackson2
 
+	//etc://etc
     compile 'ch.qos.logback:logback-classic:' + versions.logback
     compile 'org.slf4j:slf4j-api:' + versions.slf4j
     runtime 'org.slf4j:jcl-over-slf4j:' + versions.slf4j
     runtime 'org.slf4j:log4j-over-slf4j:' + versions.slf4j
     testCompile 'junit:junit:4.11'
-    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
 }
 
 //exclude common-logging
