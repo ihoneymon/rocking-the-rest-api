@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,5 +37,11 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     public Page<Community> findAll(Pageable pageable) {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    @Transactional(readOnly=true)
+    public Community findByName(String name) {
+        return communityRepository.findByName(name);
     }
 }

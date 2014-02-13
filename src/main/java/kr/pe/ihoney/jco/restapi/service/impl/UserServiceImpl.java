@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +26,14 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly=false, rollbackFor=RestApiException.class)
     public User save(User user) throws RestApiException {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        User existUser = userRepository.findByEmail(user.getName());
+        if(existUser != null) {
+            throw new RestApiException("user.exception.exist-user");
+        }
+        log.debug(">> Save user: {}", user);
+        return userRepository.saveAndFlush(user);
     }
 
     @Override

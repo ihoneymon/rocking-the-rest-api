@@ -13,6 +13,7 @@
 <!--<![endif]-->
 <head>
     <title>Hello</title>
+    <script src='<spring:url value="/view/resources/jquery/jquery-2.1.0.min.js"/>'></script>
 </head>
 <body>
     <h3>Hello!</h3>

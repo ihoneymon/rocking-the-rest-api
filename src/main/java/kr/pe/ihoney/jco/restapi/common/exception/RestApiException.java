@@ -25,6 +25,10 @@ public class RestApiException extends RuntimeException {
         super(cause);
     }
 
+    public RestApiException(String message) {
+        super(message);
+    }
+
     public Object[] getMessageParams() {
         return this.messageParams;
     }

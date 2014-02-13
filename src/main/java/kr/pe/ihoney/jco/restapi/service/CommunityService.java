@@ -7,13 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 12:09
+ * Community Service
+ * @author ihoneymon
+ *
  */
 public interface CommunityService {
     Community save(Community community) throws RestApiException;
     void delete(Community community) throws RestApiException;
     Page<Community> findAll(Pageable pageable);
+    Community findByName(String name);
 }

@@ -7,7 +7,11 @@
 	<entry key="code.post-type.private">Private</entry>
 	<entry key="code.post-type.public">Public</entry>
 	<entry key="code.post-type.publish">Publish</entry>
+	
 	<!-- CommunityType Message -->
 	<entry key="code.community-type.private">Private</entry>
 	<entry key="code.community-type.public">Public</entry>
+	
+	<!-- Exception: User -->
+	<entry key="user.exception.exist-user">Exist registred user.</entry>
 </properties>

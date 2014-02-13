@@ -7,7 +7,11 @@
 	<entry key="code.post-type.private">비공개</entry>
 	<entry key="code.post-type.public">공개</entry>
 	<entry key="code.post-type.publish">출판</entry>
+	
 	<!-- CommunityType Message -->
 	<entry key="code.community-type.private">비공개</entry>
 	<entry key="code.community-type.public">공개</entry>
+	
+	<!-- Exception: User -->
+	<entry key="user.exception.exist-user">이미 등록된 사용자가 존재합니다.</entry>
 </properties>
