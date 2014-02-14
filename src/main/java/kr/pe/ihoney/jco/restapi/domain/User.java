@@ -61,7 +61,7 @@ public class User {
     public User(String name, String email, String passwd) {
         setName(name);
         setEmail(email);
-        setPasswd(passwd);
+        setPassword(passwd);
         this.createdDate = Calendar.getInstance().getTime();
     }
     
@@ -77,7 +77,7 @@ public class User {
         return this;
     }
 
-    public User setPasswd(String password) {
+    public User setPassword(String password) {
         Assert.hasText(password, "user.require.password");
         this.password = password;
         return this;
