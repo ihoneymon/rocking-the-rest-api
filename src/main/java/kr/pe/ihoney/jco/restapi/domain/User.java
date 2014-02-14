@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -22,6 +23,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,6 +39,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EqualsAndHashCode(of = { "name", "email" })
 @ToString(of = { "id", "name", "email", "createdDate" })
 @JsonIgnoreProperties
+@XmlRootElement(name="user")
 public class User {
     @Getter
     @Id
@@ -55,16 +58,17 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Community> communities;
     @Getter
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public User(String name, String email, String passwd) {
+    public User(String name, String email, String password) {
         setName(name);
         setEmail(email);
-        setPassword(passwd);
+        setPassword(password);
         this.createdDate = Calendar.getInstance().getTime();
     }
-    
+
     public User setName(String name) {
         Assert.hasText(name, "user.require.name");
         this.name = name;
@@ -96,4 +100,5 @@ public class User {
         this.password = newPassword;
         return this;
     }
+
 }

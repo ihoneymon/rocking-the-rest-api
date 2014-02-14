@@ -7,6 +7,8 @@ import kr.pe.ihoney.jco.restapi.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    @Transactional(readOnly=false, rollbackFor=RestApiException.class)
+    @Transactional(readOnly=false, rollbackFor=Exception.class)
+    @Cacheable(value="userCache", key="#user.email.concat('.User')")
     public User save(User user) throws RestApiException {
         User existUser = userRepository.findByEmail(user.getName());
         if(existUser != null) {
@@ -37,12 +40,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly=false, rollbackFor=Exception.class)
+    @CacheEvict(value="userCache", key="#user.email.concate('.User')")
     public void delete(User user) throws RestApiException {
-        //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            userRepository.delete(user);
+            userRepository.flush();
+        } catch(Exception e) {
+            throw new RestApiException(e);
+        }
     }
 
     @Override
     public Page<User> findAll(Pageable pageable) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return userRepository.findAll(pageable);
     }
 }

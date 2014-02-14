@@ -1,5 +1,7 @@
 package kr.pe.ihoney.jco.restapi.web.api.form;
 
+import javax.validation.constraints.NotNull;
+
 import kr.pe.ihoney.jco.restapi.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +13,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(of={"name", "email"})
 public class UserForm {
+    @NotNull
     private String name;
+    @NotNull
     private String email;
     private String password;
     

@@ -13,16 +13,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.springframework.util.Assert;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.PostType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
+
+import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -37,6 +37,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EqualsAndHashCode(of = { "title", "createdDate", "createdBy" })
 @ToString(of = { "id", "type", "title", "article", "createdDate", "createdBy" })
 @JsonIgnoreProperties
+@XmlRootElement(name="post")
 public class Post {
     @Getter
     @Id
@@ -84,5 +85,4 @@ public class Post {
         this.createdBy = createdBy;
         return this;
     }
-
 }
