@@ -11,18 +11,30 @@
 		diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
 		memoryStoreEvictionPolicy="LRU" />
 		
-	<cache name="communityCache"
-		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+	<cache name="cache:communities"
+		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+	<cache name="cache:community:detail"
+		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
 		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="userCache"
-		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+	<cache name="cache:users"
+		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+	<cache name="cache:user:detail"
+		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
 		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 		
-	<cache name="postCache"
-		maxBytesLocalHeap="50M" maxElementsOnDisk="1000" eternal="false"
+	<cache name="cache:posts"
+		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
+		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+	<cache name="cache:post:detail"
+		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
 		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 </ehcache>

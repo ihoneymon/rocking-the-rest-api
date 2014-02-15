@@ -14,4 +14,13 @@
 	
 	<!-- Exception: User -->
 	<entry key="user.exception.exist-user">이미 등록된 사용자가 존재합니다.</entry>
+
+	<!-- Domain -->
+	<entry key="domain.require.createdBy">생성자는 필수 입력항목입니다.</entry>
+		
+	<!-- Post -->
+	<entry key="post.require.title">포스트의 제목은 필수 입력항목입니다.</entry>	
+	
+	<!-- Community -->
+	<entry key="community.exception.exist-same-name-community">동일한 이름의 커뮤니티가 존재합니다.</entry>	
 </properties>

@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.api.form;
+package kr.pe.ihoney.jco.restapi.web.form;
 
 import javax.validation.constraints.NotNull;
 

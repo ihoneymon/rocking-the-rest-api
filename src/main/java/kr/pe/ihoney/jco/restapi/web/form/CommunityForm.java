@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.api.form;
+package kr.pe.ihoney.jco.restapi.web.form;
 
 import java.util.Date;
 
@@ -30,5 +30,10 @@ public class CommunityForm {
     
     public Community createCommunity() {
         return new Community(getName(), getType(), getManager());
+    }
+
+    public Community bind(Community target) {
+        target.setName(this.name);
+        return target;
     }
 }

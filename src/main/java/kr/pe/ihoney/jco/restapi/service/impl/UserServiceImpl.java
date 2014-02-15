@@ -4,22 +4,20 @@ import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.repository.UserRepository;
 import kr.pe.ihoney.jco.restapi.service.UserService;
+import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 12:52
- * To change this template use File | Settings | File Templates.
+ * 
+ * @author ihoneymon
+ * 
  */
 @Slf4j
 @Service
@@ -28,11 +26,10 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    @Transactional(readOnly=false, rollbackFor=Exception.class)
-    @Cacheable(value="userCache", key="#user.email.concat('.User')")
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concate(#user.email)")
     public User save(User user) throws RestApiException {
-        User existUser = userRepository.findByEmail(user.getName());
-        if(existUser != null) {
+        if (null != findByEmail(user.getEmail())) {
             throw new RestApiException("user.exception.exist-user");
         }
         log.debug(">> Save user: {}", user);
@@ -40,19 +37,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly=false, rollbackFor=Exception.class)
-    @CacheEvict(value="userCache", key="#user.email.concate('.User')")
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @CacheEvict(value = "cache:user:detail", key = "'user'.concat(':').concate(#user.email)")
     public void delete(User user) throws RestApiException {
         try {
             userRepository.delete(user);
             userRepository.flush();
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new RestApiException(e);
         }
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
-        return userRepository.findAll(pageable);
+    @Transactional(readOnly = true)
+    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concate(#email)")
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "cache:users", key = "'users'.concat(':').concat(#pageStatus.pageNumber)")
+    public Page<User> users(PageStatus pageStatus) {
+        return userRepository.findAll(pageStatus);
+    }
+
 }

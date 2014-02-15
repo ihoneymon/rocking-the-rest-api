@@ -1,8 +1,5 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,17 +9,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,12 +29,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = "name")
-@ToString(of = { "id", "name", "type", "manager", "createdDate" })
-@JsonIgnoreProperties
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"name"}, callSuper=false)
+@ToString(of = { "id", "name", "type", "manager" }, callSuper=false)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @XmlRootElement(name="community")
-public class Community {
+public class Community extends DomainAuditable {
+    private static final long serialVersionUID = 1246400743376293747L;
+    
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,15 +51,13 @@ public class Community {
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
     private User manager; // 관리자
-    @Getter
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate; // 생성일
 
-    public Community(String name, CommunityType type, User manager) {
+    public Community(String name, CommunityType type, User createdBy) {
         setName(name);
         setType(type);
         setManager(manager);
-        this.createdDate = Calendar.getInstance().getTime();
+        setCreatedBy(createdBy);
+        setCreatedDate(DateTime.now());
     }
 
     public void setName(String name) {
@@ -79,5 +74,4 @@ public class Community {
         Assert.notNull(manager);
         this.manager = manager;
     }
-
 }

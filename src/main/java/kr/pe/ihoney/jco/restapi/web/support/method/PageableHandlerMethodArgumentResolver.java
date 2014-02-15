@@ -24,7 +24,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 @Slf4j
-public class PageableMethodArgumentResolver implements HandlerMethodArgumentResolver {
+public class PageableHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
     public static final String PAGEABL_VARIABLE = "pageRequest";
 
     private static final String DEFAULT_PREFIX = "page";

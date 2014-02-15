@@ -20,9 +20,11 @@ import org.springframework.core.convert.converter.GenericConverter;
  */
 @Slf4j
 public abstract class AbstractEntityConverter<ID> implements GenericConverter {
+    private static final String PERSISTENCE_UNIT_NAME = "rocking-the-rest-api";
+
     private final Set<ConvertiblePair> convertiblePairs;
 
-    @PersistenceContext(unitName = "rocking-the-rest-api")
+    @PersistenceContext(unitName = PERSISTENCE_UNIT_NAME)
     private EntityManager entityManager;
 
     public AbstractEntityConverter() {
@@ -41,12 +43,9 @@ public abstract class AbstractEntityConverter<ID> implements GenericConverter {
 
         try {
             ID id = convertId(source, sourceType);
-
             Object entity = entityManager.getReference(targetType.getType(), id);
-
             log.debug("Found entity[type: {}, id: {}]", new Object[] { targetType.getType(), id });
             log.trace("Found entity: {}", entity);
-
             return entity;
         } catch (Exception e) {
             if (targetType.getAnnotation(Nullable.class) != null) {

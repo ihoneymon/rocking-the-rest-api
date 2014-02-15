@@ -1,27 +1,20 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.PostType;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -33,12 +26,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = { "title", "createdDate", "createdBy" })
-@ToString(of = { "id", "type", "title", "article", "createdDate", "createdBy" })
-@JsonIgnoreProperties
+@NoArgsConstructor
+@EqualsAndHashCode(of = { "title" }, callSuper=false)
+@ToString(of = { "id", "type", "title", "article" }, callSuper=false)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @XmlRootElement(name="post")
-public class Post {
+public class Post extends DomainAuditable {
+    private static final long serialVersionUID = -9171893825408773970L;
+    
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,22 +45,13 @@ public class Post {
     private String title;
     @Getter
     private String article;
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User createdBy;
-    @Getter
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
-    @Getter
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date lastModifiedDate;
 
     public Post(String title, String article, User createdBy) {
         setTitle(title);
         setArticle(article);
         setCreatedBy(createdBy);
+        setCreatedDate(DateTime.now());
         this.type = PostType.PRIVATE;
-        this.createdDate = Calendar.getInstance().getTime();
     }
 
     public Post setTitle(String title) {
@@ -77,12 +63,6 @@ public class Post {
     public Post setArticle(String article) {
         Assert.hasText(article, "post.require.article");
         this.article = article;
-        return this;
-    }
-
-    public Post setCreatedBy(User createdBy) {
-        Assert.notNull(createdBy, "post.require.created-by");
-        this.createdBy = createdBy;
         return this;
     }
 }

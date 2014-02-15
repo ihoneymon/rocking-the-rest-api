@@ -1,5 +1,6 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,6 +27,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Sets;
 
 /**
  * 사용자 도메인
@@ -35,12 +36,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @EqualsAndHashCode(of = { "name", "email" })
 @ToString(of = { "id", "name", "email", "createdDate" })
-@JsonIgnoreProperties
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @XmlRootElement(name="user")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -3393324506709169733L;
+    
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -66,6 +69,7 @@ public class User {
         setName(name);
         setEmail(email);
         setPassword(password);
+        communities = Sets.newHashSet();
         this.createdDate = Calendar.getInstance().getTime();
     }
 

@@ -23,6 +23,7 @@ public class LongIdTypeEntityConverter extends AbstractEntityConverter<Long> {
         Set<ConvertiblePair> convertiblePairs = Sets.newHashSet();
         for (Class<?> targetType : targetTypes) {
             convertiblePairs.add(new ConvertiblePair(Long.class, targetType));
+            convertiblePairs.add(new ConvertiblePair(String.class, targetType));
         }
         return convertiblePairs;
     }

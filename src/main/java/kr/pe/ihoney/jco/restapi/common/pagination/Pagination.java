@@ -1,6 +1,7 @@
 package kr.pe.ihoney.jco.restapi.common.pagination;
 
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -57,10 +58,6 @@ public class Pagination<T> implements Serializable {
         return null == content ? false : !content.isEmpty();
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
     public List<T> getContent() {
         return content;
     }
@@ -88,16 +85,28 @@ public class Pagination<T> implements Serializable {
     public long getEndPageNumber() {
         return endPageNumber;
     }
-
-    public void setCurrentPageNumber(long currentPageNumber) {
-        this.currentPageNumber = currentPageNumber;
+    
+    public boolean isFirstBlock() {
+        return beginPageNumber == 1;
+    }
+    
+    public boolean isPrevBlock() {
+        return beginPageNumber > blockSize;
+    }
+    
+    public boolean isNextBlock() {
+        return getTotalPages() > endPageNumber;
+    }
+    
+    public Iterator<T> iterator() {
+        return content.iterator();
     }
 
-    public void setBeginPageNumber(long beginPageNumber) {
-        this.beginPageNumber = beginPageNumber;
-    }
-
-    public void setEndPageNumber(long endPageNumber) {
-        this.endPageNumber = endPageNumber;
+    @Override
+    public String toString() {
+        return "Pagination [pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", sort=" + sort
+                + ", total=" + total + ", blockSize=" + blockSize + ", currentPageNumber="
+                + currentPageNumber + ", beginPageNumber=" + beginPageNumber + ", endPageNumber="
+                + endPageNumber + "]";
     }
 }

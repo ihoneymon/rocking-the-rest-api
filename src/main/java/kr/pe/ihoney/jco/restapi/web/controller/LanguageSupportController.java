@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.api;
+package kr.pe.ihoney.jco.restapi.web.controller;
 
 import java.util.Locale;
 import java.util.Properties;
