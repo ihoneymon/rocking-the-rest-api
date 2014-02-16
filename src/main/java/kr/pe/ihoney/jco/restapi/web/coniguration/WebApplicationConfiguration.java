@@ -2,22 +2,23 @@ package kr.pe.ihoney.jco.restapi.web.coniguration;
 
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManagerFactory;
 
 import kr.pe.ihoney.jco.restapi.common.mapper.HibernateAwareObjectMapper;
 import kr.pe.ihoney.jco.restapi.web.support.converter.LongIdTypeEntityConverter;
+import kr.pe.ihoney.jco.restapi.web.support.interceptor.PageStatusAutoPersistenceInterceptor;
+import kr.pe.ihoney.jco.restapi.web.support.method.PageStatusHandlerMethodArgumentResolver;
+import kr.pe.ihoney.jco.restapi.web.support.method.PageableHandlerMethodArgumentResolver;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.converter.GenericConverter;
-import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.web.accept.ContentNegotiationManager;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.View;
@@ -35,7 +36,6 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * API 설정 context
@@ -47,8 +47,8 @@ import com.google.common.collect.Sets;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web.api")
-public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
+@ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web")
+public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Inject
     private EntityManagerFactory entityManagerFactory;
@@ -91,14 +91,49 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Override
+    public void addFormatters(FormatterRegistry registry) {
+        registry.addConverter(longIdTyoeConverter());
+    }
+    
+    @Bean
+    LongIdTypeEntityConverter longIdTyoeConverter() {
+        return new LongIdTypeEntityConverter();
+    }
+    
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(pageStatusHandlerMethodArgumentResolver());
+        argumentResolvers.add(pageableHandlerMethodArgumentResolver());
+    }
+
+
+    @Bean
+    PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver() {
+        return new PageableHandlerMethodArgumentResolver();
+    }
+
+    @Bean
+    PageStatusHandlerMethodArgumentResolver pageStatusHandlerMethodArgumentResolver() {
+        return new PageStatusHandlerMethodArgumentResolver();
+    }
+
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
                 new String[] { "/communities/**", "/users/**", "/posts/**" });
+        registry.addWebRequestInterceptor(pageStatusAutoPersistenceInterceptor());
         registry.addInterceptor(webContentInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
     }
     
-    private HandlerInterceptor localeChangeInterceptor() {
+    @Bean
+    PageStatusAutoPersistenceInterceptor pageStatusAutoPersistenceInterceptor() {
+        return new PageStatusAutoPersistenceInterceptor();
+    }
+    
+    @Bean
+    HandlerInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName(PARAM_NAME);
         return localeChangeInterceptor;
@@ -111,40 +146,21 @@ public class WebApplicationApiConfiguration extends WebMvcConfigurerAdapter {
      * 
      * @return
      */
-    private OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
+    @Bean
+    OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
         OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor = new OpenEntityManagerInViewInterceptor();
         openEntityManagerInViewInterceptor.setEntityManagerFactory(entityManagerFactory);
         return openEntityManagerInViewInterceptor;
     }
 
-    private WebContentInterceptor webContentInterceptor() {
+    @Bean
+    WebContentInterceptor webContentInterceptor() {
         WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
         webContentInterceptor.setCacheSeconds(0);
         webContentInterceptor.setUseExpiresHeader(true);
         webContentInterceptor.setUseCacheControlNoStore(true);
         webContentInterceptor.setUseCacheControlHeader(true);
         return webContentInterceptor;
-    }
-
-    /**
-     * <a href=
-     * "http://stackoverflow.com/questions/11273443/how-to-configure-spring-conversionservice-with-java-config"
-     * >ConversionService</a>
-     * 
-     * @return
-     */
-    @Bean
-    public ConversionService conversionService() {
-        FormattingConversionServiceFactoryBean bean = new FormattingConversionServiceFactoryBean();
-        bean.setConverters(getConverters());
-        bean.afterPropertiesSet();
-        return bean.getObject();
-    }
-
-    private Set<?> getConverters() {
-        Set<GenericConverter> converters = Sets.newHashSet();
-        converters.add(new LongIdTypeEntityConverter());
-        return converters;
     }
 
     @Bean

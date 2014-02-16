@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concate(#user.email)")
+    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concat(#user.email)")
     public User save(User user) throws RestApiException {
         if (null != findByEmail(user.getEmail())) {
             throw new RestApiException("user.exception.exist-user");
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @CacheEvict(value = "cache:user:detail", key = "'user'.concat(':').concate(#user.email)")
+    @CacheEvict(value = "cache:user:detail", key = "'user'.concat(':').concat(#user.email)")
     public void delete(User user) throws RestApiException {
         try {
             userRepository.delete(user);
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concate(#email)")
+    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concat(#email)")
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
