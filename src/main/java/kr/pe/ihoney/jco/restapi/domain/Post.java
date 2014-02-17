@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.PostType;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "title" }, callSuper=false)
 @ToString(of = { "id", "type", "title", "article" }, callSuper=false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

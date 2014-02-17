@@ -30,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor(access=AccessLevel.PRIVATE)
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = {"name"}, callSuper=false)
 @ToString(of = { "id", "name", "type", "manager" }, callSuper=false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

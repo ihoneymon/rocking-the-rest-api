@@ -37,7 +37,7 @@ import com.google.common.collect.Sets;
  * 
  */
 @Entity
-@NoArgsConstructor(access=AccessLevel.PRIVATE)
+@NoArgsConstructor(access=AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "name", "email" })
 @ToString(of = { "id", "name", "email", "createdDate" })
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
