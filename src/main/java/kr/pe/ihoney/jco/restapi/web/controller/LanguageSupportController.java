@@ -6,7 +6,7 @@ import java.util.Properties;
 import javax.inject.Inject;
 
 import kr.pe.ihoney.jco.restapi.common.spring.BundleMessageSource;
-import kr.pe.ihoney.jco.restapi.service.LanguageSupportService;
+import kr.pe.ihoney.jco.restapi.service.MessageSourceService;
 
 import org.springframework.context.support.DelegatingMessageSource;
 import org.springframework.http.HttpStatus;
@@ -26,7 +26,7 @@ public class LanguageSupportController {
     @Inject
     private DelegatingMessageSource messageSource;
     @Inject
-    private LanguageSupportService languageSupportService;
+    private MessageSourceService languageSupportService;
 
     @RequestMapping(value="/system-messages", method=RequestMethod.GET)
     public ResponseEntity<Object> getSystemMessage(Locale locale) {

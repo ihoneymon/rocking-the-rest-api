@@ -27,9 +27,15 @@ import redis.clients.jedis.JedisPoolConfig;
 
 import com.google.common.collect.Maps;
 
+/**
+ * Redis 캐시 설정
+ * 
+ * @author ihoneymon
+ *
+ */
+@Profile(value = "test")
 @Configuration
 @EnableCaching
-@Profile(value = "test")
 public class RedisCacheConfiguration implements CachingConfigurer {
 
     @Value("${redis.cache_expire_second}")

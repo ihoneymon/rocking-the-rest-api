@@ -24,7 +24,9 @@ public class PropertiesConfiguration {
 
     /**
      * PropertyPlaceholder는 다른 빈들보다 먼저 생성되어야 하기에 static 선언
-     * 
+     * <p>
+     *  <pre>사용 예: ${}, @Value("${key}")</pre>
+     * </p>
      * @return PropertyPlaceholderConfigurer
      */
     @Bean
@@ -34,6 +36,12 @@ public class PropertiesConfiguration {
         return ppc;
     }
 
+    /**
+     * <p>
+     *  <pre>사용 예: "#{appProperties['key']}"</pre>
+     * </p>
+     * @return
+     */
     @Bean
     public PropertiesFactoryBean appProperties() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();

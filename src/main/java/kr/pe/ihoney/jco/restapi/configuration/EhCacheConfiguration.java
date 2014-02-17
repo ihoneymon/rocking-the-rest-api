@@ -10,6 +10,7 @@ import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 
 /**
@@ -18,6 +19,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author ihoneymon 
  * <a href="http://javacan.tistory.com/123">EHCache의 주요 특징 및 기본 사용법</a>
  */
+@Profile(value="dev")
 @Configuration
 @EnableCaching
 public class EhCacheConfiguration implements CachingConfigurer {
