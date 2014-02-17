@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-    <comment>Application Configuration</comment>
+    <comment>Application Properties</comment>
 
     <!-- dataSource properties -->
     <entry key="database.class">org.h2.Driver</entry>
@@ -15,4 +15,15 @@
     <entry key="hibernate.show_sql">false</entry>
     <entry key="hibernate.format_sql">true</entry>
 
+	<entry key="redis.cache_expire_second">86400</entry>
+    <entry key="redis.host_name">localhost</entry>
+    <entry key="redis.port">36379</entry>
+    <entry key="redis.password"></entry>
+    <entry key="redis.manager.default_expire_time">30</entry>
+    <entry key="redis.manager.use_prefix">true</entry>
+    <entry key="redis.use_pool">true</entry>
+    <entry key="redis.pool_config.max_total">10</entry>
+    <entry key="redis.pool_config.max_idle">10</entry>
+    <entry key="redis.pool_config.min_idle">10</entry>
+    <entry key="redis.pool_config.max_wait">-1</entry>
 </properties>

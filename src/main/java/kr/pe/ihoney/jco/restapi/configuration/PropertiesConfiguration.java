@@ -17,7 +17,7 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class PropertiesConfiguration {
 
-    private static final String META_INF_APPLICATION_CONFIG_XML = "/META-INF/application-config.xml";
+    private static final String META_INF_APPLICATION_CONFIG_XML = "/META-INF/application-properties.xml";
     private static final String VIEW_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/view.message";
     private static final String SYSTEM_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/system.message";
     private static final String DEFAULT_ENCODING = "UTF-8";

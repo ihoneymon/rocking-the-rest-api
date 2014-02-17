@@ -28,6 +28,7 @@ ext {
         spring_core: '4.0.1.RELEASE',
         spring_data: '1.4.3.RELEASE',
         spring_data_redis: '1.1.1.RELEASE',
+        redis_clients: '2.4.0',
         ehcache: '2.6.8',
         hibernate: '4.3.1.Final',
         hibernate_validator: '5.0.3.Final',
@@ -59,7 +60,6 @@ sourceSets {
 dependencies {
     compile 'javax.inject:javax.inject:1'
 
-    //spring core, bean, context
     compile 'org.springframework:spring-core:'+ versions.spring_core, 
 		    'org.springframework:spring-context:'+ versions.spring_core,
 		    'org.springframework:spring-context-support:' + versions.spring_core,
@@ -72,8 +72,9 @@ dependencies {
     		'org.springframework:spring-orm:' + versions.spring_core,
     		'org.springframework.data:spring-data-jpa:' + versions.spring_data,
     		'org.springframework.data:spring-data-redis:' + versions.spring_data_redis
+	
+	compile 'redis.clients:jedis:' + versions.redis_clients
 
-    //spring mvc & web
     providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
     compile 'javax.servlet:jstl:1.2'
 
@@ -82,8 +83,7 @@ dependencies {
     		'com.jolbox:bonecp:' + versions.bonecp
 
     //hibernate, spring data jpa, querydsl
-    compile 'org.hibernate:hibernate-c3p0:' + versions.hibernate,
-		    'org.hibernate:hibernate-core:' + versions.hibernate,
+    compile 'org.hibernate:hibernate-core:' + versions.hibernate,
 		    'org.hibernate:hibernate-entitymanager:' + versions.hibernate,
 		    'org.hibernate:hibernate-envers:' + versions.hibernate,
 		    'org.hibernate:hibernate-validator:' + versions.hibernate_validator
