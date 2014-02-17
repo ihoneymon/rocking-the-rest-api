@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Created with IntelliJ IDEA. User: ihoneymon Date: 14. 2. 2 Time: 오후 12:10
+ * 커뮤니티 컨트롤러
+ * @author ihoneymon
+ *
  */
 @Slf4j
 @RestController

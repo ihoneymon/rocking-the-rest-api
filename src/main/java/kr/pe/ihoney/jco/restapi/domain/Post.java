@@ -42,9 +42,9 @@ public class Post extends DomainAuditable {
     @Enumerated(EnumType.STRING)
     private PostType type;
     @Getter
-    private String title;
+    private String title;		//제목
     @Getter
-    private String article;
+    private String article;		//본문
 
     public Post(String title, String article, User createdBy) {
         setTitle(title);

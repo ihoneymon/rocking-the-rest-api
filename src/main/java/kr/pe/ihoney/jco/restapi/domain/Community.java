@@ -43,14 +43,14 @@ public class Community extends DomainAuditable {
     private Long id;
     @Getter
     @Column(unique = true, nullable = false)
-    private String name; // 커뮤니티명
+    private String name; 			// 커뮤니티명
     @Getter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CommunityType type; // 커뮤니티유형
+    private CommunityType type; 	// 커뮤니티유형
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    private User manager; // 관리자
+    private User manager; 			// 관리자
 
     public Community(String name, CommunityType type, User createdBy) {
         setName(name);

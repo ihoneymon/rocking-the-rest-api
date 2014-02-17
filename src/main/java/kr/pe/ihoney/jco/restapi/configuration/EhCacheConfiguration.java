@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
 /**
- * 캐시설정
+ * EhCache 캐시설정
  * 
  * @author ihoneymon 
  * <a href="http://javacan.tistory.com/123">EHCache의 주요 특징 및 기본 사용법</a>
@@ -22,10 +22,12 @@ import org.springframework.core.io.ClassPathResource;
 @EnableCaching
 public class EhCacheConfiguration implements CachingConfigurer {
 
-    @Bean
+    private static final String EHCACHE_XML_CONFIG_LOCATION = "/META-INF/ehcache.xml";
+
+	@Bean
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
         EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource("/META-INF/ehcache.xml"));
+        ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource(EHCACHE_XML_CONFIG_LOCATION));
         ehCacheManagerFactoryBean.setShared(true);
         return ehCacheManagerFactoryBean;
     }
