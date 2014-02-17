@@ -3,9 +3,11 @@ package kr.pe.ihoney.jco.restapi.domain;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.PostType;
@@ -45,11 +47,14 @@ public class Post extends DomainAuditable {
     private String title;		//제목
     @Getter
     private String article;		//본문
+    @Getter
+    @ManyToOne(fetch=FetchType.LAZY, optional=false)
+    private Member member;
 
-    public Post(String title, String article, User createdBy) {
+    public Post(String title, String article, Member member) {
         setTitle(title);
         setArticle(article);
-        setCreatedBy(createdBy);
+        setCreatedBy(member.getUser());
         setCreatedDate(DateTime.now());
         this.type = PostType.PRIVATE;
     }

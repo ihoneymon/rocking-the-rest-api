@@ -10,6 +10,7 @@ import javax.persistence.TemporalType;
 
 import org.joda.time.DateTime;
 import org.springframework.data.domain.Auditable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 @MappedSuperclass
@@ -18,10 +19,12 @@ public abstract class DomainAuditable implements Auditable<User, Long> {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
+    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private User lastModifiedBy;
+    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 

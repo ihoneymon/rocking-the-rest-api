@@ -2,6 +2,8 @@ package kr.pe.ihoney.jco.restapi.service;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Member;
+import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +22,14 @@ public interface CommunityService {
     Page<Community> communities(PageStatus pageStatus);
 
     Community findByName(String name);
+
+    /**
+     * 커뮤니티의 회원 조회
+     * @param community
+     * @param pageStatus
+     * @return 
+     */
+    Page<Member> findMembersByCommunity(Community community, PageStatus pageStatus);
+
+    Member registerMember(String nickName, Community community, User user);
 }

@@ -18,6 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ import com.google.common.collect.Sets;
  * 
  */
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = { "name", "email" })
 @ToString(of = { "id", "name", "email", "createdDate" })
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -61,7 +62,7 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Community> communities;
     @Getter
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm")
+    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 

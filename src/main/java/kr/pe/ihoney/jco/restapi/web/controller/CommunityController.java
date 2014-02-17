@@ -2,9 +2,13 @@ package kr.pe.ihoney.jco.restapi.web.controller;
 
 import javax.validation.Valid;
 
+import kr.pe.ihoney.jco.restapi.common.pagination.Pagination;
+import kr.pe.ihoney.jco.restapi.common.pagination.Paginations;
 import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.service.CommunityService;
 import kr.pe.ihoney.jco.restapi.web.form.CommunityForm;
+import kr.pe.ihoney.jco.restapi.web.form.MemberForm;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,9 +39,9 @@ public class CommunityController {
     private CommunityService communityService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<Page<Community>> getCommunities(PageStatus pageStatus) {
+    public ResponseEntity<Pagination<Community>> getCommunities(PageStatus pageStatus) {
         Page<Community> page = communityService.communities(pageStatus);
-        return new ResponseEntity<Page<Community>>(page, HttpStatus.OK);
+        return new ResponseEntity<Pagination<Community>>(Paginations.pagination(page), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -68,5 +72,37 @@ public class CommunityController {
     public ResponseEntity<Object> delete(@PathVariable Community community) {
         communityService.delete(community);
         return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+    }
+    
+    @RequestMapping(value="/{community}/members", method=RequestMethod.GET)
+    public ResponseEntity<Pagination<Member>> getMembersOfCommunity(@PathVariable Community community, PageStatus pageStatus) {
+        Page<Member> page = communityService.findMembersByCommunity(community, pageStatus);
+        return new ResponseEntity<Pagination<Member>>(Paginations.pagination(page), HttpStatus.OK);
+    }
+    
+    /**
+     * 회원등록
+     * @param community
+     * @param form
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value="/{community}/register-member", method=RequestMethod.POST)
+    public ResponseEntity<Member> registerMember(@PathVariable Community community, @Valid @RequestBody MemberForm form, BindingResult bindingResult) {
+        Member member = communityService.registerMember(form.getNickName(), community, form.getUser());
+        return new ResponseEntity<Member>(member, HttpStatus.CREATED);
+    }
+    
+    /**
+     * 회원등록
+     * 
+     * @param form
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value="/register-member", method=RequestMethod.POST)
+    public ResponseEntity<Member> registerMember(@Valid @RequestBody MemberForm form, BindingResult bindingResult) {
+        Member member = communityService.registerMember(form.getNickName(), form.getCommunity(), form.getUser());
+        return new ResponseEntity<Member>(member, HttpStatus.CREATED);
     }
 }

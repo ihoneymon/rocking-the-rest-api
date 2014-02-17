@@ -2,8 +2,8 @@ package kr.pe.ihoney.jco.restapi.web.form;
 
 import javax.validation.constraints.NotNull;
 
+import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.Post;
-import kr.pe.ihoney.jco.restapi.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class PostForm {
     @NotNull
     private String article;
     @NotNull
-    private User createdBy;
+    private Member createdBy;
     
     public Post createPost() {
         return new Post(title, article, createdBy);

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access=AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"name"}, callSuper=false)
 @ToString(of = { "id", "name", "type", "manager" }, callSuper=false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

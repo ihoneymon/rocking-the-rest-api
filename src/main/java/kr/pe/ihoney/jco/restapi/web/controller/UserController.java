@@ -50,25 +50,23 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
     
-    @SuppressWarnings("unchecked")
     @RequestMapping(value="/{user}", method=RequestMethod.PUT)
-    public ResponseEntity modifyUser(@Valid @RequestBody UserForm form, BindingResult bindingResult, @PathVariable User user) {
+    public ResponseEntity<User> modifyUser(@Valid @RequestBody UserForm form, BindingResult bindingResult, @PathVariable User user) {
         if(bindingResult.hasErrors()){
-            //TODO 오류를 어떻게 전달해줄까?
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<User>(HttpStatus.BAD_REQUEST);
         }
         
-        return new ResponseEntity(userService.save(form.bind(user)),HttpStatus.OK);
+        return new ResponseEntity<User>(userService.save(form.bind(user)),HttpStatus.OK);
     }
     
     @RequestMapping(value="/{user}", method=RequestMethod.DELETE)
-    public ResponseEntity deleteUser(@PathVariable User user) {
+    public ResponseEntity<Object> deleteUser(@PathVariable User user) {
         log.debug(">> User: {}", user);
         try {
             userService.delete(user);
         } catch(Exception e) {
             log.error(">> Occur exception: {}", e.getMessage());
         }
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
     }
 }
