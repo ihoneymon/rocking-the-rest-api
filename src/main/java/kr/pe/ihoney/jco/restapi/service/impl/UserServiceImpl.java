@@ -1,7 +1,5 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
-import java.util.List;
-
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.repository.UserRepository;
@@ -62,12 +60,6 @@ public class UserServiceImpl implements UserService {
     @Cacheable(value = "cache:users", key = "'users'.concat(':').concat(#pageStatus.pageNumber)")
     public Page<User> users(PageStatus pageStatus) {
         return userRepository.findAll(pageStatus);
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
     }
 
 }

@@ -1,7 +1,5 @@
 package kr.pe.ihoney.jco.restapi.web.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import kr.pe.ihoney.jco.restapi.common.pagination.Pagination;
@@ -37,9 +35,10 @@ public class UserController {
         return new ResponseEntity<Pagination<User>>(Paginations.pagination(page.getContent(), pageStatus), HttpStatus.OK);
     }
     
-    @RequestMapping(value="/xml", method=RequestMethod.GET)
-    public ResponseEntity<UsersDto> getAllUsers() {
-        return new ResponseEntity<UsersDto>(new UsersDto(userService.getAllUsers()), HttpStatus.OK);
+    @RequestMapping(method=RequestMethod.GET, produces="application/xml")
+    public ResponseEntity<UsersDto> getXmlUsers(PageStatus pageStatus) {
+        Page<User> page = userService.users(pageStatus);
+        return new ResponseEntity<UsersDto>(new UsersDto(page.getContent()), HttpStatus.OK);
     }
     
     @RequestMapping(method=RequestMethod.POST)

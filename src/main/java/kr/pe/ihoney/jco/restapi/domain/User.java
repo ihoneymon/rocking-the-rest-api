@@ -17,14 +17,17 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import kr.pe.ihoney.jco.restapi.web.support.serializer.DateSerializer;
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -38,14 +41,14 @@ import com.google.common.collect.Sets;
  * 
  */
 @Entity
-@NoArgsConstructor(access=AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "name", "email" })
 @ToString(of = { "id", "name", "email", "createdDate" })
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@XmlRootElement(name="user")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@XmlRootElement(name = "user")
 public class User implements Serializable {
     private static final long serialVersionUID = -3393324506709169733L;
-    
+
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,16 +59,16 @@ public class User implements Serializable {
     @Getter
     @Column(unique = true, nullable = false)
     private String email;
-    @Getter
     @Column(nullable = false)
     private String password;
     @Getter
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Community> communities;
+    @JsonSerialize(using = DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type = DateTime.class, value = DateTimeAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    
     public User(String name, String email, String password) {
         setName(name);
         setEmail(email);
@@ -108,10 +111,5 @@ public class User implements Serializable {
 
     public static long getSerialversionuid() {
         return serialVersionUID;
-    }
-
-    @JsonSerialize(using=DateSerializer.class)
-    public Date getCreatedDate() {
-        return createdDate;
     }
 }

@@ -19,7 +19,7 @@ public interface CommunityService {
 
     void delete(Community community) throws RestApiException;
 
-    Page<Community> communities(PageStatus pageStatus);
+    Page<Community> getCommunities(PageStatus pageStatus);
 
     Community findByName(String name);
 

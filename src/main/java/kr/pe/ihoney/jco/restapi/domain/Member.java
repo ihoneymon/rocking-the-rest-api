@@ -14,17 +14,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.util.Assert;
-
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.joda.time.DateTime;
+import org.springframework.util.Assert;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * 회원
@@ -33,7 +37,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
-@NoArgsConstructor(access=AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "community", "user" }, callSuper = false)
 @ToString(of = { "id", "community", "user" }, callSuper = false)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
@@ -45,19 +49,20 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique=true)
-    private String nickName;        //별명
+    @Column(unique = true)
+    private String nickName;            // 별명
     @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional=false)
-    private Community community;    //커뮤니티
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Community community;        // 커뮤니티
     @Getter
-    @OneToOne(fetch = FetchType.LAZY, optional=false)
-    private User user;              //사용자
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;                  // 사용자
     @Getter
-    @DateTimeFormat
+    @JsonSerialize(using = DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type = DateTime.class, value = DateTimeAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
-    
+
     public Member(String nickName, Community community, User user) {
         Assert.notNull(nickName, "member.require.nick_name");
         Assert.notNull(community, "member.require.community");

@@ -7,6 +7,7 @@ import kr.pe.ihoney.jco.restapi.common.pagination.Paginations;
 import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.service.CommunityService;
+import kr.pe.ihoney.jco.restapi.web.dto.CommunityDto;
 import kr.pe.ihoney.jco.restapi.web.form.CommunityForm;
 import kr.pe.ihoney.jco.restapi.web.form.MemberForm;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
@@ -40,8 +41,14 @@ public class CommunityController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Pagination<Community>> getCommunities(PageStatus pageStatus) {
-        Page<Community> page = communityService.communities(pageStatus);
+        Page<Community> page = communityService.getCommunities(pageStatus);
         return new ResponseEntity<Pagination<Community>>(Paginations.pagination(page), HttpStatus.OK);
+    }
+    
+    @RequestMapping(method = RequestMethod.GET, produces="application/xml")
+    public ResponseEntity<CommunityDto> getCommunityXml(PageStatus pageStatus) {
+        Page<Community> page = communityService.getCommunities(pageStatus);
+        return new ResponseEntity<CommunityDto>(new CommunityDto(page.getContent()), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)

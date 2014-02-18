@@ -7,24 +7,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
+import lombok.ToString;
 
 import org.joda.time.DateTime;
 import org.springframework.data.domain.Auditable;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @MappedSuperclass
+@ToString(of={"createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"})
 public abstract class DomainAuditable implements Auditable<User, Long> {
     private static final long serialVersionUID = -410212408783103422L;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User createdBy;
-    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
     private User lastModifiedBy;
-    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
@@ -45,6 +50,8 @@ public abstract class DomainAuditable implements Auditable<User, Long> {
     }
 
     @Override
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type=DateTime.class, value=DateTimeAdapter.class)
     public DateTime getCreatedDate() {
         return null == this.createdDate ? null : new DateTime(this.createdDate); 
     }
@@ -65,6 +72,8 @@ public abstract class DomainAuditable implements Auditable<User, Long> {
     }
 
     @Override
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type=DateTime.class, value=DateTimeAdapter.class)
     public DateTime getLastModifiedDate() {
         return null == this.lastModifiedBy ? null : new DateTime(this.lastModifiedDate);
     }

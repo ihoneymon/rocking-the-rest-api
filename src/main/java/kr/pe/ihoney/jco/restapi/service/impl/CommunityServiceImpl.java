@@ -49,7 +49,7 @@ public class CommunityServiceImpl implements CommunityService {
     @Override
     @Transactional(readOnly=true)
     @Cacheable(value="cache:communities", key="'communities'.concat(':').concat(#pageStatus.pageNumber)")
-    public Page<Community> communities(PageStatus pageStatus) {
+    public Page<Community> getCommunities(PageStatus pageStatus) {
         return communityRepository.findAll(pageStatus);
     }
 
