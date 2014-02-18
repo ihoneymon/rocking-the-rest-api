@@ -97,24 +97,23 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(longIdTyoeConverter());
     }
-    
+
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(new MappingJackson2HttpMessageConverter());  //JSON
-        converters.add(new Jaxb2RootElementHttpMessageConverter()); //XML
+        converters.add(new MappingJackson2HttpMessageConverter()); // JSON
+        converters.add(new Jaxb2RootElementHttpMessageConverter()); // XML
     }
-    
+
     @Bean
     LongIdTypeEntityConverter longIdTyoeConverter() {
         return new LongIdTypeEntityConverter();
     }
-    
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(pageStatusHandlerMethodArgumentResolver());
         argumentResolvers.add(pageableHandlerMethodArgumentResolver());
     }
-
 
     @Bean
     PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver() {
@@ -126,7 +125,6 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
         return new PageStatusHandlerMethodArgumentResolver();
     }
 
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
@@ -135,12 +133,12 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
         registry.addInterceptor(webContentInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
     }
-    
+
     @Bean
     PageStatusAutoPersistenceInterceptor pageStatusAutoPersistenceInterceptor() {
         return new PageStatusAutoPersistenceInterceptor();
     }
-    
+
     @Bean
     HandlerInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
@@ -176,7 +174,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     ObjectMapper objectMapper() {
         return new HibernateAwareObjectMapper();
     }
-
+    
     @Bean
     LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();

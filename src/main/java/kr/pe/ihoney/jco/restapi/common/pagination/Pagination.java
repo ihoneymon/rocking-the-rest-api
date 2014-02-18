@@ -21,7 +21,7 @@ public class Pagination<T> implements Serializable {
     private long currentPageNumber;
     private long beginPageNumber;
     private long endPageNumber;
-
+    
     public Pagination(List<T> content, int pageNumber, int pageSize, Sort sort, long total) {
         if (null == content) {
             throw new IllegalArgumentException("system.exception.page-content.must.not-null");
@@ -101,7 +101,7 @@ public class Pagination<T> implements Serializable {
     public Iterator<T> iterator() {
         return content.iterator();
     }
-
+    
     @Override
     public String toString() {
         return "Pagination [pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", sort=" + sort

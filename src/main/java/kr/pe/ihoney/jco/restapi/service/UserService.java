@@ -1,5 +1,7 @@
 package kr.pe.ihoney.jco.restapi.service;
 
+import java.util.List;
+
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
@@ -20,4 +22,6 @@ public interface UserService {
     User findByEmail(String email);
 
     Page<User> users(PageStatus pageStatus);
+
+    List<User> getAllUsers();
 }

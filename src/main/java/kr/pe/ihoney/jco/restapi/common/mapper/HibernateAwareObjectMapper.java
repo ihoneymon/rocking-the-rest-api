@@ -1,5 +1,6 @@
 package kr.pe.ihoney.jco.restapi.common.mapper;
 
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
@@ -17,9 +18,14 @@ public class HibernateAwareObjectMapper extends ObjectMapper {
 
     public HibernateAwareObjectMapper() {
         configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        
+        registerModule(getHibernate4Module());
+    }
 
+    private Module getHibernate4Module() {
         Hibernate4Module hibernateModule = new Hibernate4Module();
         hibernateModule.disable(Hibernate4Module.Feature.FORCE_LAZY_LOADING);
-        registerModule(hibernateModule);
+        return hibernateModule;
     }
 }

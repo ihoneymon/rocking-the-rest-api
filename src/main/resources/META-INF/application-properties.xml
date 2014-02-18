@@ -2,6 +2,8 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
     <comment>Application Properties</comment>
+	<!-- application properties -->
+	<entry key="system.datetime_pattern">yyyy-MM-dd HH:mm</entry>
 
     <!-- dataSource properties -->
     <entry key="database.class">org.h2.Driver</entry>

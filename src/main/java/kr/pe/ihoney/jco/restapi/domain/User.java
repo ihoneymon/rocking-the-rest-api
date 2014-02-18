@@ -18,16 +18,17 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.collect.Sets;
 
 /**
@@ -61,11 +62,10 @@ public class User implements Serializable {
     @Getter
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Community> communities;
-    @Getter
-    @DateTimeFormat
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    
     public User(String name, String email, String password) {
         setName(name);
         setEmail(email);
@@ -106,4 +106,12 @@ public class User implements Serializable {
         return this;
     }
 
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    @JsonSerialize(using=DateSerializer.class)
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 }

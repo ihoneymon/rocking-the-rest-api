@@ -1,11 +1,14 @@
 package kr.pe.ihoney.jco.restapi.web.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import kr.pe.ihoney.jco.restapi.common.pagination.Pagination;
 import kr.pe.ihoney.jco.restapi.common.pagination.Paginations;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.service.UserService;
+import kr.pe.ihoney.jco.restapi.web.dto.UsersDto;
 import kr.pe.ihoney.jco.restapi.web.form.UserForm;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +35,11 @@ public class UserController {
     public ResponseEntity<Pagination<User>> getUsers(PageStatus pageStatus) {
         Page<User> page = userService.users(pageStatus);
         return new ResponseEntity<Pagination<User>>(Paginations.pagination(page.getContent(), pageStatus), HttpStatus.OK);
+    }
+    
+    @RequestMapping(value="/xml", method=RequestMethod.GET)
+    public ResponseEntity<UsersDto> getAllUsers() {
+        return new ResponseEntity<UsersDto>(new UsersDto(userService.getAllUsers()), HttpStatus.OK);
     }
     
     @RequestMapping(method=RequestMethod.POST)
@@ -69,4 +77,5 @@ public class UserController {
         }
         return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
     }
+    
 }
