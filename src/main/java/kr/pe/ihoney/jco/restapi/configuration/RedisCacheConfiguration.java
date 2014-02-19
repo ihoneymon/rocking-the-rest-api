@@ -33,7 +33,7 @@ import com.google.common.collect.Maps;
  * @author ihoneymon
  *
  */
-@Profile(value = "test")
+@Profile("test")
 @Configuration
 @EnableCaching
 public class RedisCacheConfiguration implements CachingConfigurer {

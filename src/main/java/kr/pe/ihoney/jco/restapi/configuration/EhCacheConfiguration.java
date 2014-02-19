@@ -19,7 +19,7 @@ import org.springframework.core.io.ClassPathResource;
  * @author ihoneymon 
  * <a href="http://javacan.tistory.com/123">EHCache의 주요 특징 및 기본 사용법</a>
  */
-@Profile(value = "local")
+@Profile("local")
 @Configuration
 @EnableCaching
 public class EhCacheConfiguration implements CachingConfigurer {
