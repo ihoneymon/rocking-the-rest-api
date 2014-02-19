@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
-    <comment>Application Properties</comment>
+    <comment>Application Test Properties</comment>
 	<!-- application properties -->
 	<entry key="system.datetime_pattern">yyyy-MM-dd HH:mm</entry>
 
     <!-- dataSource properties -->
-    <entry key="database.class">org.h2.Driver</entry>
-    <entry key="database.url">jdbc:h2:file:~/.h2database/rest_api_study</entry>
-    <entry key="database.username">sa</entry>
-    <entry key="database.password"></entry>
+    <entry key="database.class">com.mysql.jdbc.Driver</entry>
+    <entry key="database.url">jdbc:mysql://localhost:3306/rest_api_study</entry>
+    <entry key="database.username">rocking</entry>
+    <entry key="database.password">thegradle0228</entry>
 
     <!-- jpa properties -->
-    <entry key="hibernate.dialect">org.hibernate.dialect.H2Dialect</entry>
+    <entry key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</entry>
     <entry key="hibernate.hbm2ddl.auto">update</entry>
     <entry key="hibernate.show_sql">false</entry>
     <entry key="hibernate.format_sql">true</entry>

@@ -13,7 +13,7 @@ REST API의 설계와 구축(A부터 I까지)
 ```
 $ git clone https://github.com/ihoneymon/rocking-the-rest-api
 $ cd rocking-the-rest-api
-$ ./gradlew tomcatRun
+$ ./gradlew tomcatRun -Dspring.profiles.active=local
 ```
 
 #### API 문서

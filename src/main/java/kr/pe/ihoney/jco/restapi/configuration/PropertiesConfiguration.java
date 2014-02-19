@@ -6,6 +6,7 @@ import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.support.MessageSourceAccessor;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.ClassPathResource;
@@ -17,7 +18,8 @@ import org.springframework.core.io.Resource;
 @Configuration
 public class PropertiesConfiguration {
 
-    private static final String META_INF_APPLICATION_CONFIG_XML = "/META-INF/application-properties.xml";
+    private static final String APPLICATION_LOCAL_CONFIG_XML = "/META-INF/application-local-properties.xml";
+    private static final String APPLICATION_TEST_CONFIG_XML = "/META-INF/application-test-properties.xml";
     private static final String VIEW_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/view.message";
     private static final String SYSTEM_MESSAGE_PROPERTIES = "classpath:/META-INF/properties/system.message";
     private static final String DEFAULT_ENCODING = "UTF-8";
@@ -29,10 +31,19 @@ public class PropertiesConfiguration {
      * </p>
      * @return PropertyPlaceholderConfigurer
      */
-    @Bean
-    public static PropertyPlaceholderConfigurer propertyPlaceholderConfigurer() {
+    @Profile("local")
+    @Bean(name="propertyPlaceholderConfigurer")
+    public static PropertyPlaceholderConfigurer localPropertyPlaceholderConfigurer() {
         PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
-        ppc.setLocations(new Resource[] { new ClassPathResource(META_INF_APPLICATION_CONFIG_XML) });
+        ppc.setLocations(new Resource[] { new ClassPathResource(APPLICATION_LOCAL_CONFIG_XML) });
+        return ppc;
+    }
+    
+    @Profile("test")
+    @Bean(name="propertyPlaceholderConfigurer")
+    public static PropertyPlaceholderConfigurer testPropertyPlaceholderConfigurer() {
+        PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
+        ppc.setLocations(new Resource[] { new ClassPathResource(APPLICATION_TEST_CONFIG_XML) });
         return ppc;
     }
 
@@ -45,7 +56,7 @@ public class PropertiesConfiguration {
     @Bean
     public PropertiesFactoryBean appProperties() {
         PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        Resource[] resources = { new ClassPathResource(META_INF_APPLICATION_CONFIG_XML) };
+        Resource[] resources = { new ClassPathResource(APPLICATION_LOCAL_CONFIG_XML) };
         propertiesFactoryBean.setLocations(resources);
         propertiesFactoryBean.setIgnoreResourceNotFound(true);
         return propertiesFactoryBean;

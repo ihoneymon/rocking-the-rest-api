@@ -19,21 +19,21 @@ import org.springframework.core.io.ClassPathResource;
  * @author ihoneymon 
  * <a href="http://javacan.tistory.com/123">EHCache의 주요 특징 및 기본 사용법</a>
  */
-@Profile(value="dev")
+@Profile(value = "local")
 @Configuration
 @EnableCaching
 public class EhCacheConfiguration implements CachingConfigurer {
 
     private static final String EHCACHE_XML_CONFIG_LOCATION = "/META-INF/ehcache.xml";
 
-	@Bean
+    @Bean
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
         EhCacheManagerFactoryBean ehCacheManagerFactoryBean = new EhCacheManagerFactoryBean();
         ehCacheManagerFactoryBean.setConfigLocation(new ClassPathResource(EHCACHE_XML_CONFIG_LOCATION));
         ehCacheManagerFactoryBean.setShared(true);
         return ehCacheManagerFactoryBean;
     }
-    
+
     @Bean
     @Override
     public CacheManager cacheManager() {
