@@ -7,7 +7,7 @@
 
     <!-- dataSource properties -->
     <entry key="database.class">org.h2.Driver</entry>
-    <entry key="database.url">jdbc:h2:file:~/.h2database/rest_api_study</entry>
+    <entry key="database.url">jdbc:h2:file:~/.h2database/rocking_the_rest_api</entry>
     <entry key="database.username">sa</entry>
     <entry key="database.password"></entry>
 

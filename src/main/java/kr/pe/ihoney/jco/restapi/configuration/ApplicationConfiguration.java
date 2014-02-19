@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
  *
  */
 @Configuration
-@Import(value={DatabaseConfiguration.class, PropertiesConfiguration.class, EhCacheConfiguration.class})
+@Import(value={DatabaseConfiguration.class, PropertiesConfiguration.class})
 @ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi", excludeFilters = {
         @ComponentScan.Filter(Controller.class), @ComponentScan.Filter(Configuration.class) })
 public class ApplicationConfiguration {
