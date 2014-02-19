@@ -7,7 +7,7 @@
 
     <!-- dataSource properties -->
     <entry key="database.class">com.mysql.jdbc.Driver</entry>
-    <entry key="database.url">jdbc:mysql://localhost:3306/rest_api_study</entry>
+    <entry key="database.url">jdbc:mysql://localhost:3306/rocking_the_rest_api</entry>
     <entry key="database.username">rocking</entry>
     <entry key="database.password">thegradle0228</entry>
 
