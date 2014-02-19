@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateAdapter;
 import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
 import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
@@ -65,7 +66,7 @@ public class User implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Community> communities;
     @JsonSerialize(using = DateTimeSerializer.class)
-    @XmlJavaTypeAdapter(type = DateTime.class, value = DateTimeAdapter.class)
+    @XmlJavaTypeAdapter(type = Date.class, value = DateAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
