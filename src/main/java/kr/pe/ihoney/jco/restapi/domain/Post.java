@@ -1,16 +1,13 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlRootElement;
 
-import kr.pe.ihoney.jco.restapi.domain.type.PostType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -31,58 +28,44 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "title" }, callSuper = false)
-@ToString(of = { "id", "type", "title", "article" }, callSuper = false)
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@XmlRootElement(name = "post")
+@ToString(of = { "id", "title", "article" }, callSuper = false)
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "group" })
 public class Post extends DomainAuditable {
-	private static final long serialVersionUID = -9171893825408773970L;
+    private static final long serialVersionUID = -9171893825408773970L;
 
-	@Getter
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	@Getter
-	@Enumerated(EnumType.STRING)
-	private PostType type;
-	@Getter
-	private String title; // 제목
-	@Getter
-	private String article; // 본문
-	@Getter
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	private Member member;
+    @Getter
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Getter
+    private String title; // 제목
+    @Getter
+    private String article; // 본문
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Group group; // 그룹
 
-	public Post(String title, String article, Member member) {
-		setTitle(title);
-		setArticle(article);
-		setMember(member);
-		this.type = PostType.PRIVATE;
-	}
+    public Post(String title, String article, Group group, Member member) {
+        Assert.hasText(title, "post.require.title");
+        Assert.hasText(article, "post.require.article");
+        Assert.notNull(group, "post.require.group");
 
-	public Post setTitle(String title) {
-		Assert.hasText(title, "post.require.title");
-		this.title = title;
-		return this;
-	}
-
-	public Post setArticle(String article) {
-		Assert.hasText(article, "post.require.article");
-		this.article = article;
-		return this;
-	}
-
-	public Post setMember(Member member) {
-		Assert.notNull(member, "post.require.member");		
-		this.member = member;
-		setCreatedBy(member.getUser());
-		setCreatedDate(DateTime.now());		
-		return this;
-	}
-
-    public boolean doesOpen(Member member) {
-        if(PostType.PRIVATE == getType()) {
-            return this.member.equals(member);
-        }
-        return true;
+        this.group = group;
+        this.title = title;
+        this.article = article;
+        setCreatedBy(member);
+        setCreatedDate(DateTime.now());
     }
+
+    public Post changeTitle(String title) {
+        Assert.hasText(title, "post.require.title");
+        this.title = title;
+        return this;
+    }
+
+    public Post changeArticle(String article) {
+        Assert.hasText(article, "post.require.article");
+        this.article = article;
+        return this;
+    }
+
 }

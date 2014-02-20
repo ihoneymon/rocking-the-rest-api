@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.hibernate.validator.internal.xml.GroupsType;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of={"email", "name"})
-public class MemberCondition {
-    private String email;
+@ToString(of = { "name", "type" })
+public class GroupCondition {
     private String name;
+    private GroupsType type;
 }

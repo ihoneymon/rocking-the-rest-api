@@ -9,12 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
 
-import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
+import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -27,7 +23,7 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * 커뮤니티 도메인
+ * 그룹 도메인
  * 
  * @author ihoneymon
  * 
@@ -35,50 +31,59 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(of = { "name" }, callSuper = false)
-@ToString(of = { "id", "name", "type", "manager" }, callSuper = false)
+@ToString(of = { "id", "name", "type", "owner" }, callSuper = false)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@XmlRootElement(name = "community")
-@XmlType(propOrder = { "id", "name", "type", "manager" })
-public class Community extends DomainAuditable {
+public class Group extends DomainAuditable {
     private static final long serialVersionUID = 1246400743376293747L;
 
     @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @XmlSchemaType(name = "string")
     private Long id;
     @Getter
     @Column(unique = true, nullable = false)
-    private String name;            // 커뮤니티명
+    private String name;            // 그룹명
     @Getter
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @XmlElement(name = "type")
-    private CommunityType type;     // 커뮤니티유형
+    private GroupType type;         // 커뮤니티 유형
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    private User manager;           // 관리자
+    private Member owner;           // 생성자
 
-    public Community(String name, CommunityType type, User createdBy) {
+    public Group(String name, GroupType type, Member member) {
         setName(name);
         setType(type);
-        setManager(createdBy);
+        setOwner(member);
         setCreatedDate(DateTime.now());
-        setCreatedBy(createdBy);        
+        setCreatedBy(member);        
     }
 
-    public void setName(String name) {
-        Assert.hasText(name, "community.require.name");
+    public Group setName(String name) {
+        Assert.hasText(name, "group.require.name");
         this.name = name;
+        return this;
     }
 
-    private void setType(CommunityType type) {
+    private Group setType(GroupType type) {
         Assert.notNull(type);
         this.type = type;
+        return this;
     }
 
-    public void setManager(User manager) {
-        Assert.notNull(manager, "community.require.createdBy");
-        this.manager = manager;
+    public Group setOwner(Member owner) {
+        Assert.notNull(owner, "group.require.owner");
+        this.owner = owner;
+        return this;
+    }
+    
+    public Group changeName(String name) {
+        Assert.hasText(name, "group.require.name");
+        this.name = name;
+        return this;
+    }
+
+    public Boolean isPrivate() {
+        return this.type == GroupType.PRIVATE;
     }
 }
