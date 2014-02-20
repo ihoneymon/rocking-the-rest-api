@@ -1,6 +1,16 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
 
+import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
+import kr.pe.ihoney.jco.restapi.domain.QMember;
+import kr.pe.ihoney.jco.restapi.domain.QUser;
+import kr.pe.ihoney.jco.restapi.domain.User;
+import kr.pe.ihoney.jco.restapi.repository.UserRepository;
+import kr.pe.ihoney.jco.restapi.service.UserManagementService;
+import kr.pe.ihoney.jco.restapi.service.condition.UserCondition;
+import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,15 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.mysema.query.BooleanBuilder;
-
-import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
-import kr.pe.ihoney.jco.restapi.domain.QUser;
-import kr.pe.ihoney.jco.restapi.domain.User;
-import kr.pe.ihoney.jco.restapi.repository.UserRepository;
-import kr.pe.ihoney.jco.restapi.service.UserManagementService;
-import kr.pe.ihoney.jco.restapi.service.condition.UserCondition;
-import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -31,6 +32,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Transactional(readOnly=true)
     @Cacheable(value = "cache:users", key = "'users'.concat(':').concat(#condition.toString()).concat(':').concat(#pageStatus.pageNumber.toString())")
     public Page<User> getUsers(UserCondition condition, PageStatus pageStatus) {
+        QMember qMember = QMember.member;
         QUser qUser = QUser.user;
         BooleanBuilder builder = new BooleanBuilder();
         if (StringUtils.hasText(condition.getName())) {
@@ -40,7 +42,7 @@ public class UserManagementServiceImpl implements UserManagementService {
             builder.and(qUser.email.contains(condition.getEmail()));
         }
         if (null != condition.getCommunity()) {
-            builder.and(qUser.communities.contains(condition.getCommunity()));
+            builder.and(qMember.user.eq(qUser).and(qMember.community.eq(condition.getCommunity())));
         }
         return userRepository.findAll(builder, pageStatus);
     }
