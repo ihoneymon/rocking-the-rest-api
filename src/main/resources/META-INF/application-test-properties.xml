@@ -28,4 +28,6 @@
     <entry key="redis.pool_config.max_idle">10</entry>
     <entry key="redis.pool_config.min_idle">10</entry>
     <entry key="redis.pool_config.max_wait">-1</entry>
+    
+    <entry key="community.manager.nickName">커뮤니티 관리자</entry>
 </properties>

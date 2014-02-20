@@ -17,16 +17,14 @@ public class UserForm {
     private String name;
     @NotNull
     private String email;
-    private String password;
     
     public User createUser() {
-        return new User(this.name, this.email, this.password);
+        return new User(this.name, this.email);
     }
     
     public User bind(User target) {
         target.setName(this.name);
         target.setEmail(this.email);
-        target.setPassword(password);
         return target;
     }
 }

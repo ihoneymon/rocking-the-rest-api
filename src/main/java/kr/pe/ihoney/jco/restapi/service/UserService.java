@@ -1,10 +1,11 @@
 package kr.pe.ihoney.jco.restapi.service;
 
-import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
-import kr.pe.ihoney.jco.restapi.domain.User;
-import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
+import java.util.List;
 
-import org.springframework.data.domain.Page;
+import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Post;
+import kr.pe.ihoney.jco.restapi.domain.User;
+
 
 /**
  * 사용자 서비스
@@ -13,11 +14,13 @@ import org.springframework.data.domain.Page;
  * 
  */
 public interface UserService {
-    User save(User user) throws RestApiException;
 
-    void delete(User user) throws RestApiException;
-    
-    User findByEmail(String email);
+    User getUser(User user);
 
-    Page<User> users(PageStatus pageStatus);
+    User save(User bind);
+
+    List<Community> findCommunitiesOfUser(User user);
+
+    List<Post> findPostsOfUser(User user);
+
 }

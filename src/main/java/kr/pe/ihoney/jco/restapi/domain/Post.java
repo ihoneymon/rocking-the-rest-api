@@ -78,4 +78,11 @@ public class Post extends DomainAuditable {
 		setCreatedDate(DateTime.now());		
 		return this;
 	}
+
+    public boolean doesOpen(Member member) {
+        if(PostType.PRIVATE == getType()) {
+            return this.member.equals(member);
+        }
+        return true;
+    }
 }

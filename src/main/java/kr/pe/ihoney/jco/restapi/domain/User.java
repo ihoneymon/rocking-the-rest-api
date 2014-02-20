@@ -4,23 +4,21 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import kr.pe.ihoney.jco.restapi.domain.type.UserGradeType;
 import kr.pe.ihoney.jco.restapi.web.support.adapter.DateAdapter;
-import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
 import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -28,12 +26,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.collect.Sets;
 
 /**
  * 사용자 도메인
@@ -60,21 +56,19 @@ public class User implements Serializable {
     @Getter
     @Column(unique = true, nullable = false)
     private String email;
-    @Column(nullable = false)
-    private String password;
     @Getter
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Community> communities;
+    @Enumerated(EnumType.STRING)
+    private UserGradeType grade;
+    @Getter
+    private String refreshToken;
     @JsonSerialize(using = DateTimeSerializer.class)
     @XmlJavaTypeAdapter(type = Date.class, value = DateAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email) {
         setName(name);
         setEmail(email);
-        setPassword(password);
-        communities = Sets.newHashSet();
         this.createdDate = Calendar.getInstance().getTime();
     }
 
@@ -90,12 +84,6 @@ public class User implements Serializable {
         return this;
     }
 
-    public User setPassword(String password) {
-        Assert.hasText(password, "user.require.password");
-        this.password = password;
-        return this;
-    }
-
     public User addCommunity(List<Community> communities) {
         communities.clear();
         if (!communities.isEmpty()) {
@@ -104,13 +92,12 @@ public class User implements Serializable {
         return this;
     }
 
-    public User changePassword(String newPassword) {
-        Assert.hasText(newPassword, "syste.require.user-password");
-        this.password = newPassword;
-        return this;
-    }
-
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+    
+    public User changeRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+        return this;
     }
 }

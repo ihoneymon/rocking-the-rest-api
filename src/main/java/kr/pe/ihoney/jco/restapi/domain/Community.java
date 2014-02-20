@@ -63,8 +63,8 @@ public class Community extends DomainAuditable {
         setName(name);
         setType(type);
         setManager(createdBy);
-        setCreatedBy(createdBy);
         setCreatedDate(DateTime.now());
+        setCreatedBy(createdBy);        
     }
 
     public void setName(String name) {
@@ -78,7 +78,7 @@ public class Community extends DomainAuditable {
     }
 
     public void setManager(User manager) {
-        Assert.notNull(manager);
+        Assert.notNull(manager, "community.require.createdBy");
         this.manager = manager;
     }
 }

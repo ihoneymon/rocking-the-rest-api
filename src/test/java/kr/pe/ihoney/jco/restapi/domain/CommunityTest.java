@@ -11,7 +11,7 @@ public class CommunityTest {
 
     @Before
     public void setUp() {
-        manager = new User("Tester", "test@test.email", "password");
+        manager = new User("Tester", "test@test.email");
     }
 
     @Test(expected = IllegalArgumentException.class)

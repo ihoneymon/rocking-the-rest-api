@@ -7,9 +7,9 @@ import org.springframework.core.Ordered;
 import com.google.common.collect.Sets;
 
 public enum PostType implements Ordered {
-    PRIVATE("code.post-type.private", 1), 
-    PUBLIC("code.post-type.public", 2), 
-    PUBLISH("code.post-type.publish", 3);
+    PRIVATE("code.postType.private", 1), 
+    PUBLIC("code.postType.public", 2), 
+    PUBLISH("code.postType.publish", 3);
 
     private String code;
     private int order;

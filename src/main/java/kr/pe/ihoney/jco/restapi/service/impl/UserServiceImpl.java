@@ -1,16 +1,19 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
-import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
+import java.util.List;
+
+import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Post;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import kr.pe.ihoney.jco.restapi.repository.UserRepository;
+import kr.pe.ihoney.jco.restapi.service.CommunityService;
+import kr.pe.ihoney.jco.restapi.service.MemberService;
+import kr.pe.ihoney.jco.restapi.service.PostService;
 import kr.pe.ihoney.jco.restapi.service.UserService;
-import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,42 +27,36 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CommunityService communityService;
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private PostService postService;
 
     @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concat(#user.email)")
-    public User save(User user) throws RestApiException {
-        if (null != findByEmail(user.getEmail())) {
-            throw new RestApiException("user.exception.exist-user");
-        }
-        log.debug(">> Save user: {}", user);
+    @Transactional(readOnly=true)
+    @Cacheable(value="cache:user:detail", key="'user'.concat(':').concat(#user.id.toString())")
+    public User getUser(User user) {
+        log.debug(">> Get User: {}", user);
+        return userRepository.findOne(user.getId());
+    }
+
+    @Override
+    @Transactional(readOnly=false, rollbackFor=Exception.class)
+    @Cacheable(value="cache:user:detail", key="'user'.concat(':').concat(#user.id.toString())")
+    public User save(User user) {
         return userRepository.saveAndFlush(user);
     }
 
     @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @CacheEvict(value = "cache:user:detail", key = "'user'.concat(':').concat(#user.email)")
-    public void delete(User user) throws RestApiException {
-        try {
-            userRepository.delete(user);
-            userRepository.flush();
-        } catch (Exception e) {
-            throw new RestApiException(e);
-        }
+    @Transactional(readOnly=true)
+    public List<Community> findCommunitiesOfUser(User user) {
+        return communityService.findCommunitiesByUser(user);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value = "cache:user:detail", key = "'user'.concat(':').concat(#email)")
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public List<Post> findPostsOfUser(User user) {
+        return postService.findPostsOfUser(user);
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value = "cache:users", key = "'users'.concat(':').concat(#pageStatus.pageNumber)")
-    public Page<User> users(PageStatus pageStatus) {
-        return userRepository.findAll(pageStatus);
-    }
-
 }

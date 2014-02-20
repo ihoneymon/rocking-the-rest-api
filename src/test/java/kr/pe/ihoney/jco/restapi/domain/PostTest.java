@@ -14,7 +14,7 @@ public class PostTest {
     
     @Before
     public void setUp() {
-        user = new User("tester", "test@test.email", "password");
+        user = new User("tester", "test@test.email");
         community = new Community("Test Team", CommunityType.PUBLIC, user);
         member = new Member("Tester", community, user);
     }

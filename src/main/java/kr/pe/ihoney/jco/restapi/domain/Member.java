@@ -64,10 +64,16 @@ public class Member implements Serializable {
     private Date createdDate;
 
     public Member(String nickName, Community community, User user) {
-        Assert.notNull(nickName, "member.require.nick_name");
+        Assert.hasText(nickName, "member.require.nickName");
         Assert.notNull(community, "member.require.community");
         Assert.notNull(user, "member.require.user");
         this.community = community;
         this.user = user;
+    }
+
+    public Member changeNickName(String nickName) {
+        Assert.hasText(nickName, "member.require.nickName");
+        this.nickName = nickName;
+        return this;
     }
 }

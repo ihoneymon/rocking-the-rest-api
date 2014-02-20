@@ -4,16 +4,16 @@
 	<comment>rocking-the-rest-api Korean view.message</comment>
 	
 	<!-- CodeType Message -->
-	<entry key="code.post-type.private">비공개</entry>
-	<entry key="code.post-type.public">공개</entry>
-	<entry key="code.post-type.publish">출판</entry>
+	<entry key="code.postType.private">비공개</entry>
+	<entry key="code.postType.public">공개</entry>
+	<entry key="code.postType.publish">출판</entry>
 	
 	<!-- CommunityType Message -->
 	<entry key="code.community-type.private">비공개</entry>
 	<entry key="code.community-type.public">공개</entry>
 	
 	<!-- Exception: User -->
-	<entry key="user.exception.exist-user">이미 등록된 사용자가 존재합니다.</entry>
+	<entry key="user.exception.existUser">이미 등록된 사용자가 존재합니다.</entry>
 
 	<!-- Domain -->
 	<entry key="domain.require.createdBy">생성자는 필수 입력항목입니다.</entry>
@@ -22,12 +22,13 @@
 	<entry key="post.require.title">제목은 필수 입력항목입니다.</entry>	
 	<entry key="post.require.article">본문은 필수 입력항목입니다.</entry>	
 	<entry key="post.require.member">회원은 필수 입력항목입니다.</entry>	
+	<entry key="post.exception.is.privateType">비공개 포스티입니다.</entry>
 	
 	<!-- Community -->
-	<entry key="community.exception.exist-same-name-community">동일한 이름의 커뮤니티가 존재합니다.</entry>
+	<entry key="community.exception.existSameNameCommunity">동일한 이름의 커뮤니티가 존재합니다.</entry>
 	
 	<!-- Member -->
-	<entry key="member.require.nick_name">별명은 필수 입력항목입니다.</entry>	
+	<entry key="member.require.nickName">별명은 필수 입력항목입니다.</entry>	
 	<entry key="member.require.community">커뮤니티는 필수 입력항목입니다.</entry>	
 	<entry key="member.require.user">사용자는 필수 입력항목입니다.</entry>	
 </properties>
