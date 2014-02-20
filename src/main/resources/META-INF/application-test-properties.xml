@@ -9,7 +9,7 @@
     <entry key="database.class">com.mysql.jdbc.Driver</entry>
     <entry key="database.url">jdbc:mysql://localhost:3306/rocking_the_rest_api</entry>
     <entry key="database.username">rocking</entry>
-    <entry key="database.password">thegradle0228</entry>
+    <entry key="database.password">therestapi0228</entry>
 
     <!-- jpa properties -->
     <entry key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</entry>
