@@ -1,10 +1,12 @@
 package kr.pe.ihoney.jco.restapi.repository.executor;
 
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.path.PathBuilder;
 import org.springframework.core.GenericTypeResolver;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,13 +17,9 @@ import org.springframework.data.querydsl.EntityPathResolver;
 import org.springframework.data.querydsl.SimpleEntityPathResolver;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.PathBuilder;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Transactional(readOnly = true)
 public abstract class AbstractJPAQueryPredicateExecutor<T> implements JPQLQueryPredicateExecutor<T> {
@@ -57,7 +55,6 @@ public abstract class AbstractJPAQueryPredicateExecutor<T> implements JPQLQueryP
     /*
      * @see org.springframework.data.jpa.repository.support.QueryDslJpaRepository#createQuery(Predicate... predicate)
      */
-    @Override
     public JPQLQuery createQuery(Predicate... predicate) {
         return new JPAQuery(entityManager).from(path).where(predicate);
     }

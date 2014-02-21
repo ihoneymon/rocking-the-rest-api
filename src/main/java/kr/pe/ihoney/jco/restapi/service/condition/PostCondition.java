@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.springframework.util.StringUtils;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,17 +12,4 @@ import org.springframework.util.StringUtils;
 public class PostCondition {
     private String title;
     private String article;
-    private String creatorName;
-    
-    public boolean hasTitle() {
-        return StringUtils.hasText(title);
-    }
-    
-    public boolean hasArticle() {
-        return StringUtils.hasText(article);
-    }
-    
-    public boolean hasCreatorName() {
-        return StringUtils.hasText(creatorName);
-    }
 }

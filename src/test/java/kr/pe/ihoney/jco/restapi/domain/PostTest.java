@@ -1,8 +1,7 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.CoreMatchers.*;
+import static org.junit.Assert.*;
 import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 
 import org.junit.Before;
@@ -15,10 +14,8 @@ public class PostTest {
 
     @Before
     public void setUp() {
-        User owner = new User("owner@rocking.api", "owner");
-        User user1 = new User("user1@rocking.api", "사용자1");
-        group = new Group("Test Team", GroupType.PUBLIC, owner);
-        member = new Member("회원1", group, user1);
+        member = new Member("member@rocking.api", "member");
+        group = new Group("Test Team", GroupType.PUBLIC, member);
     }
 
     @Test(expected = IllegalArgumentException.class)

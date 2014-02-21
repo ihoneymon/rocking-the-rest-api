@@ -1,27 +1,27 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * 회원
@@ -31,9 +31,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = { "nickName", "group" }, callSuper=false)
-@ToString(of = { "id", "nickName" }, callSuper=false)
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "group", "user" })
+@EqualsAndHashCode(of = { "email", "name" })
+@ToString(of = { "id", "email", "name" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 public class Member implements Serializable {
     private static final long serialVersionUID = -4479702752651514475L;
 
@@ -42,31 +42,35 @@ public class Member implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Getter
-    private String nickName;
+    @Column(unique = true, nullable = false)
+    private String email; // 별명
     @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Group group;
+    private String name; // 사용자명
     @Getter
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
-    @Getter
+    @JsonSerialize(using = DateTimeSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date createdDate;
+    private DateTime createdDate;
 
-    public Member(String nickName, Group group, User user) {
-        Assert.hasText(nickName, "member.require.nickName");
-        Assert.notNull(group, "member.require.group");
-        Assert.notNull(user, "member.require.user");
-        
-        this.nickName = nickName;
-        this.group = group;
-        this.user = user;
-        this.createdDate = Calendar.getInstance().getTime();
+    public Member(String email, String name) {
+        setEmail(email);
+        setName(name);
+        this.createdDate = DateTime.now();
     }
 
-    public Member changNickName(String nickName) {
-        Assert.hasText(nickName, "member.require.nickName");
-        this.nickName = nickName;
+    private Member setEmail(String email) {
+        Assert.hasText(email, "member.require.email");
+        this.email = email;
+        return this;
+    }
+
+    private Member setName(String name) {
+        Assert.hasText(name, "member.require.name");
+        this.name = name;
+        return this;
+    }
+
+    public Member changeName(String name) {
+        setName(name);
         return this;
     }
 }

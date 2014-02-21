@@ -41,7 +41,6 @@ public class Post extends DomainAuditable {
     private String title; // 제목
     @Getter
     private String article; // 본문
-    @Getter
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Group group; // 그룹
 

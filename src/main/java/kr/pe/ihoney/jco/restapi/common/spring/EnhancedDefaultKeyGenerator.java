@@ -26,7 +26,6 @@ public class EnhancedDefaultKeyGenerator implements KeyGenerator {
 
     private static final HashSet<Class<?>> WRAPPER_TYPES = getWrapperTypes();
 
-    @Override
     public Object generate(Object target, Method method, Object... params) {
         if (params.length == 1 && isWrapperType(params[0].getClass())) {
             return (params[0] == null ? NULL_PARAM_KEY : params[0]);

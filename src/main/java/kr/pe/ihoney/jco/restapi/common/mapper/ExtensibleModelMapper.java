@@ -89,17 +89,14 @@ public class ExtensibleModelMapper {
         modelMapper.validate();
     }
 
-    @Override
     public boolean equals(Object target) {
         return modelMapper.equals(target);
     }
 
-    @Override
     public int hashCode() {
         return modelMapper.hashCode();
     }
 
-    @Override
     public String toString() {
         return modelMapper.toString();
     }

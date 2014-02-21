@@ -3,7 +3,7 @@ package kr.pe.ihoney.jco.restapi.web.form;
 import javax.validation.constraints.NotNull;
 
 import kr.pe.ihoney.jco.restapi.domain.Group;
-import kr.pe.ihoney.jco.restapi.domain.User;
+import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,9 +20,9 @@ public class GroupForm {
     @NotNull
     private GroupType type; // 커뮤니티유형
     @NotNull
-    private User owner; // 관리자
+    private Member owner; // 관리자
     
-    public Group createGroup() {
+    public Group createCommunity() {
         return new Group(getName(), getType(), getOwner());
     }
 

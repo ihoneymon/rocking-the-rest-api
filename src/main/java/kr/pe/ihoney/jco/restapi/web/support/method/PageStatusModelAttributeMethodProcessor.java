@@ -26,7 +26,6 @@ public class PageStatusModelAttributeMethodProcessor implements HandlerMethodArg
     @Inject
     PageStatusFactory pageStatusFactory;
 
-    @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(PageStatusModel.class);
     }

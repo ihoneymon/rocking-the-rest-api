@@ -43,7 +43,11 @@ import com.google.common.collect.Lists;
 /**
  * API 설정 context
  * 
+ * @Configuration: mvc:annotation-driven
+ * @EnableAsync: task:annotation-driven
+ * @ComponentScan: context:component-scan
  */
+
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web")
@@ -54,14 +58,12 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     private String PARAM_NAME = "lang";
 
     @Override
-    public void configureDefaultServletHandling(
-            DefaultServletHandlerConfigurer configurer) {
+    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
 
     @Bean
-    ContentNegotiatingViewResolver contentNegotiatingViewResolver(
-            ContentNegotiationManager manager) {
+    ContentNegotiatingViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
         contentNegotiatingViewResolver.setContentNegotiationManager(manager);
         contentNegotiatingViewResolver.setViewResolvers(getViewResolvers());
@@ -97,8 +99,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void configureMessageConverters(
-            List<HttpMessageConverter<?>> converters) {
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new MappingJackson2HttpMessageConverter()); // JSON
         converters.add(new Jaxb2RootElementHttpMessageConverter()); // XML
     }
@@ -109,8 +110,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void addArgumentResolvers(
-            List<HandlerMethodArgumentResolver> argumentResolvers) {
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(pageStatusHandlerMethodArgumentResolver());
         argumentResolvers.add(pageableHandlerMethodArgumentResolver());
     }
@@ -127,8 +127,8 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor())
-                .addPathPatterns(new String[] { "/groups/**", "/users/**" });
+        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
+                new String[] { "/communities/**", "/users/**", "/posts/**" });
         registry.addWebRequestInterceptor(pageStatusAutoPersistenceInterceptor());
         registry.addInterceptor(webContentInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
@@ -156,8 +156,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     @Bean
     OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
         OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor = new OpenEntityManagerInViewInterceptor();
-        openEntityManagerInViewInterceptor
-                .setEntityManagerFactory(entityManagerFactory);
+        openEntityManagerInViewInterceptor.setEntityManagerFactory(entityManagerFactory);
         return openEntityManagerInViewInterceptor;
     }
 
@@ -175,7 +174,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     ObjectMapper objectMapper() {
         return new HibernateAwareObjectMapper();
     }
-
+    
     @Bean
     LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
