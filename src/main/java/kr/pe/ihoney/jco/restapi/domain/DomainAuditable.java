@@ -7,7 +7,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
 import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.ToString;
 
@@ -18,17 +20,16 @@ import org.springframework.util.Assert;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @MappedSuperclass
-@ToString(of = { "createdBy", "createdDate", "lastModifiedBy",
-        "lastModifiedDate" })
-public abstract class DomainAuditable implements Auditable<Member, Long> {
+@ToString(of={"createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"})
+public abstract class DomainAuditable implements Auditable<User, Long> {
     private static final long serialVersionUID = -410212408783103422L;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member createdBy;
+    private User createdBy;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member lastModifiedBy;
+    private User lastModifiedBy;
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
@@ -38,20 +39,21 @@ public abstract class DomainAuditable implements Auditable<Member, Long> {
     }
 
     @Override
-    public Member getCreatedBy() {
+    public User getCreatedBy() {
         return this.createdBy;
     }
 
     @Override
-    public void setCreatedBy(Member createdBy) {
+    public void setCreatedBy(User createdBy) {
         Assert.notNull(createdBy, "domain.require.createdBy");
         this.createdBy = createdBy;
     }
 
     @Override
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type=DateTime.class, value=DateTimeAdapter.class)
     public DateTime getCreatedDate() {
-        return null == this.createdDate ? null : new DateTime(this.createdDate);
+        return null == this.createdDate ? null : new DateTime(this.createdDate); 
     }
 
     @Override
@@ -60,26 +62,25 @@ public abstract class DomainAuditable implements Auditable<Member, Long> {
     }
 
     @Override
-    public Member getLastModifiedBy() {
+    public User getLastModifiedBy() {
         return this.lastModifiedBy;
     }
 
     @Override
-    public void setLastModifiedBy(Member lastModifiedBy) {
+    public void setLastModifiedBy(User lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using=DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type=DateTime.class, value=DateTimeAdapter.class)
     public DateTime getLastModifiedDate() {
-        return null == this.lastModifiedBy ? null : new DateTime(
-                this.lastModifiedDate);
+        return null == this.lastModifiedBy ? null : new DateTime(this.lastModifiedDate);
     }
 
     @Override
     public void setLastModifiedDate(DateTime lastModifiedDate) {
-        this.createdDate = null == lastModifiedDate ? null
-                : this.lastModifiedDate;
+        this.createdDate = null == lastModifiedDate ? null : this.lastModifiedDate;
     }
 
 }

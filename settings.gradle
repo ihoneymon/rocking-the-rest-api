@@ -16,4 +16,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'rocking-the-groups'
+rootProject.name = 'rocking-the-rest-api'

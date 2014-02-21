@@ -1,15 +1,22 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import kr.pe.ihoney.jco.restapi.web.support.adapter.DateTimeAdapter;
 import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -31,9 +38,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = { "email", "name" })
-@ToString(of = { "id", "email", "name" })
+@EqualsAndHashCode(of = { "community", "user" }, callSuper = false)
+@ToString(of = { "id", "community", "user" }, callSuper = false)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@XmlRootElement(name = "member")
 public class Member implements Serializable {
     private static final long serialVersionUID = -4479702752651514475L;
 
@@ -41,36 +49,31 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique = true)
+    private String nickName;            // 별명
     @Getter
-    @Column(unique = true, nullable = false)
-    private String email; // 별명
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private Community community;        // 커뮤니티
     @Getter
-    private String name; // 사용자명
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;                  // 사용자
     @Getter
     @JsonSerialize(using = DateTimeSerializer.class)
+    @XmlJavaTypeAdapter(type = DateTime.class, value = DateTimeAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
-    private DateTime createdDate;
+    private Date createdDate;
 
-    public Member(String email, String name) {
-        setEmail(email);
-        setName(name);
-        this.createdDate = DateTime.now();
+    public Member(String nickName, Community community, User user) {
+        Assert.hasText(nickName, "member.require.nickName");
+        Assert.notNull(community, "member.require.community");
+        Assert.notNull(user, "member.require.user");
+        this.community = community;
+        this.user = user;
     }
 
-    private Member setEmail(String email) {
-        Assert.hasText(email, "member.require.email");
-        this.email = email;
-        return this;
-    }
-
-    private Member setName(String name) {
-        Assert.hasText(name, "member.require.name");
-        this.name = name;
-        return this;
-    }
-
-    public Member changeName(String name) {
-        setName(name);
+    public Member changeNickName(String nickName) {
+        Assert.hasText(nickName, "member.require.nickName");
+        this.nickName = nickName;
         return this;
     }
 }

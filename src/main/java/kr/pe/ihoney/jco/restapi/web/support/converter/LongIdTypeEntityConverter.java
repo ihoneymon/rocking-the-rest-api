@@ -2,9 +2,9 @@ package kr.pe.ihoney.jco.restapi.web.support.converter;
 
 import java.util.Set;
 
-import kr.pe.ihoney.jco.restapi.domain.Group;
-import kr.pe.ihoney.jco.restapi.domain.Member;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Post;
+import kr.pe.ihoney.jco.restapi.domain.User;
 
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.util.NumberUtils;
@@ -16,8 +16,8 @@ public class LongIdTypeEntityConverter extends AbstractEntityConverter<Long> {
     @Override
     Set<ConvertiblePair> initConvertiblePairs() {
         Set<Class<?>> targetTypes = Sets.newHashSet();
-        targetTypes.add(Member.class);
-        targetTypes.add(Group.class);
+        targetTypes.add(Community.class);
+        targetTypes.add(User.class);
         targetTypes.add(Post.class);
 
         Set<ConvertiblePair> convertiblePairs = Sets.newHashSet();
