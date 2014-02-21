@@ -1,6 +1,6 @@
 package kr.pe.ihoney.jco.restapi.service.condition;
 
-import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Group;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,5 +11,5 @@ import lombok.ToString;
 public class UserCondition {
     private String name;
     private String email;
-    private Community community;    
+    private Group community;    
 }

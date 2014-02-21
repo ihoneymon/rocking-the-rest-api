@@ -2,33 +2,33 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties version="1.0">
 	<comment>rocking-the-rest-api Korean view.message</comment>
-	
+
 	<!-- CodeType Message -->
 	<entry key="code.postType.private">비공개</entry>
 	<entry key="code.postType.public">공개</entry>
 	<entry key="code.postType.publish">출판</entry>
-	
-	<!-- CommunityType Message -->
-	<entry key="code.community-type.private">비공개</entry>
-	<entry key="code.community-type.public">공개</entry>
-	
-	<!-- Exception: User -->
-	<entry key="user.exception.existUser">이미 등록된 사용자가 존재합니다.</entry>
+
+	<!-- groupType Message -->
+	<entry key="code.groupType.private">비공개</entry>
+	<entry key="com.groupType.public">공개</entry>
 
 	<!-- Domain -->
 	<entry key="domain.require.createdBy">생성자는 필수 입력항목입니다.</entry>
-		
-	<!-- Post -->
-	<entry key="post.require.title">제목은 필수 입력항목입니다.</entry>	
-	<entry key="post.require.article">본문은 필수 입력항목입니다.</entry>	
-	<entry key="post.require.member">회원은 필수 입력항목입니다.</entry>	
-	<entry key="post.exception.is.privateType">비공개 포스티입니다.</entry>
-	
-	<!-- Community -->
-	<entry key="community.exception.existSameNameCommunity">동일한 이름의 커뮤니티가 존재합니다.</entry>
-	
+
+	<!-- User -->
+	<entry key="user.exception.existUser">이미 등록된 사용자가 존재합니다.</entry>
+
+	<!-- Group -->
+	<entry key="group.exception.registered.member">이미 등록된 사용자입니다.</entry>
+
 	<!-- Member -->
-	<entry key="member.require.nickName">별명은 필수 입력항목입니다.</entry>	
-	<entry key="member.require.community">커뮤니티는 필수 입력항목입니다.</entry>	
-	<entry key="member.require.user">사용자는 필수 입력항목입니다.</entry>	
+	<entry key="member.require.nickName">별명은 필수 입력항목입니다.</entry>
+	<entry key="member.require.group">커뮤니티는 필수 입력항목입니다.</entry>
+	<entry key="member.require.user">사용자는 필수 입력항목입니다.</entry>
+
+	<!-- Post -->
+	<entry key="post.require.title">제목은 필수 입력항목입니다.</entry>
+	<entry key="post.require.article">본문은 필수 입력항목입니다.</entry>
+	<entry key="post.require.member">회원은 필수 입력항목입니다.</entry>
+	<entry key="post.exception.is.privateType">비공개 포스티입니다.</entry>
 </properties>

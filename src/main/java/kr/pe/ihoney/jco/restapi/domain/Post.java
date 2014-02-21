@@ -74,7 +74,7 @@ public class Post extends DomainAuditable {
 	public Post setMember(Member member) {
 		Assert.notNull(member, "post.require.member");		
 		this.member = member;
-		setCreatedBy(member.getUser());
+		setCreatedBy(member);
 		setCreatedDate(DateTime.now());		
 		return this;
 	}

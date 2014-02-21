@@ -3,12 +3,9 @@ package kr.pe.ihoney.jco.restapi.domain;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,9 +14,8 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
-import kr.pe.ihoney.jco.restapi.domain.type.UserGradeType;
 import kr.pe.ihoney.jco.restapi.web.support.adapter.DateAdapter;
-import kr.pe.ihoney.jco.restapi.web.support.serializer.DateTimeSerializer;
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -56,12 +52,7 @@ public class User implements Serializable {
     @Getter
     @Column(unique = true, nullable = false)
     private String email;
-    @Getter
-    @Enumerated(EnumType.STRING)
-    private UserGradeType grade;
-    @Getter
-    private String refreshToken;
-    @JsonSerialize(using = DateTimeSerializer.class)
+    @JsonSerialize(using = DateSerializer.class)
     @XmlJavaTypeAdapter(type = Date.class, value = DateAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
@@ -81,23 +72,6 @@ public class User implements Serializable {
     public User setEmail(String email) {
         Assert.hasText(email, "user.require.email");
         this.email = email;
-        return this;
-    }
-
-    public User addCommunity(List<Community> communities) {
-        communities.clear();
-        if (!communities.isEmpty()) {
-            communities.addAll(communities);
-        }
-        return this;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-    
-    public User changeRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
         return this;
     }
 }

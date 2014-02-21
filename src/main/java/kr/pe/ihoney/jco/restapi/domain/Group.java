@@ -1,5 +1,10 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
+import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,22 +14,25 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
-import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
+import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
+import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import org.joda.time.DateTime;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.google.common.collect.Sets;
 
 /**
  * 커뮤니티 도메인
@@ -37,9 +45,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @EqualsAndHashCode(of = { "name" }, callSuper = false)
 @ToString(of = { "id", "name", "type", "manager" }, callSuper = false)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-@XmlRootElement(name = "community")
+@XmlRootElement(name = "group")
 @XmlType(propOrder = { "id", "name", "type", "manager" })
-public class Community extends DomainAuditable {
+public class Group implements Serializable {
     private static final long serialVersionUID = 1246400743376293747L;
 
     @Getter
@@ -49,36 +57,54 @@ public class Community extends DomainAuditable {
     private Long id;
     @Getter
     @Column(unique = true, nullable = false)
-    private String name;            // 커뮤니티명
+    private String name; // 커뮤니티명
     @Getter
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     @XmlElement(name = "type")
-    private CommunityType type;     // 커뮤니티유형
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private GroupType type; // 커뮤니티유형
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    private User manager;           // 관리자
+    private Member manager; // 관리자
+    @Getter
+    private User createdBy;
+    @Getter
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
+    @Getter
+    private Set<Member> members;
 
-    public Community(String name, CommunityType type, User createdBy) {
+    public Group(String name, GroupType type, User createdBy) {
         setName(name);
         setType(type);
-        setManager(createdBy);
-        setCreatedDate(DateTime.now());
-        setCreatedBy(createdBy);        
+        this.createdBy = createdBy;
+        this.createdDate = Calendar.getInstance().getTime();
+        this.members = Sets.newHashSet();
     }
 
-    public void setName(String name) {
-        Assert.hasText(name, "community.require.name");
+    public Group setName(String name) {
+        Assert.hasText(name, "group.require.name");
         this.name = name;
+        return this;
     }
 
-    private void setType(CommunityType type) {
+    private Group setType(GroupType type) {
         Assert.notNull(type);
         this.type = type;
+        return this;
     }
 
-    public void setManager(User manager) {
-        Assert.notNull(manager, "community.require.createdBy");
+    public Group setManager(Member manager) {
+        Assert.notNull(manager, "group.require.manager");
         this.manager = manager;
+        return this;
+    }
+    
+    public Group addMember(Member member) throws RestApiException {
+        if(members.contains(member)) {
+            throw new RestApiException("group.exception.registered.member");
+        }
+        members.add(member);
+        return this;
     }
 }
