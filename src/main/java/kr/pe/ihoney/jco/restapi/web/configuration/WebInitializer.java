@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.coniguration;
+package kr.pe.ihoney.jco.restapi.web.configuration;
 
 import kr.pe.ihoney.jco.restapi.configuration.ApplicationConfiguration;
 import org.springframework.web.WebApplicationInitializer;

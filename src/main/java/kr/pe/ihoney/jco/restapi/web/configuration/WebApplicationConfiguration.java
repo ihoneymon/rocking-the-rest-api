@@ -1,4 +1,4 @@
-package kr.pe.ihoney.jco.restapi.web.coniguration;
+package kr.pe.ihoney.jco.restapi.web.configuration;
 
 import java.util.List;
 import java.util.Locale;
@@ -16,16 +16,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter;
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.ViewResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -33,21 +33,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
-import org.springframework.web.servlet.view.BeanNameViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
 /**
  * API 설정 context
  * 
- * @Configuration: mvc:annotation-driven
- * @EnableAsync: task:annotation-driven
- * @ComponentScan: context:component-scan
  */
-
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "kr.pe.ihoney.jco.restapi.web")
@@ -58,30 +54,40 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     private String PARAM_NAME = "lang";
 
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+    public void configureDefaultServletHandling(
+            DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
 
+    
+    
+    @Override
+    public void configureContentNegotiation(
+            ContentNegotiationConfigurer configurer) {
+        configurer.defaultContentType(MediaType.APPLICATION_JSON);
+        configurer.mediaTypes(ImmutableMap.of("json", MediaType.APPLICATION_JSON));
+        super.configureContentNegotiation(configurer);
+    }
+
     @Bean
-    ContentNegotiatingViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
+    public ContentNegotiatingViewResolver contentNegotiatingViewResolver(
+            ContentNegotiationManager manager) {
         ContentNegotiatingViewResolver contentNegotiatingViewResolver = new ContentNegotiatingViewResolver();
         contentNegotiatingViewResolver.setContentNegotiationManager(manager);
-        contentNegotiatingViewResolver.setViewResolvers(getViewResolvers());
         contentNegotiatingViewResolver.setDefaultViews(getDefaultViews());
-
         return contentNegotiatingViewResolver;
     }
 
-    private List<ViewResolver> getViewResolvers() {
-        List<ViewResolver> viewResolvers = Lists.newArrayList();
-        viewResolvers.add(beanNameViewResolver());
-        return viewResolvers;
-    }
-
-    private BeanNameViewResolver beanNameViewResolver() {
-        BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
-        return beanNameViewResolver;
-    }
+//    private List<ViewResolver> getViewResolvers() {
+//        List<ViewResolver> viewResolvers = Lists.newArrayList();
+//        viewResolvers.add(beanNameViewResolver());
+//        return viewResolvers;
+//    }
+//
+//    private BeanNameViewResolver beanNameViewResolver() {
+//        BeanNameViewResolver beanNameViewResolver = new BeanNameViewResolver();
+//        return beanNameViewResolver;
+//    }
 
     private List<View> getDefaultViews() {
         List<View> views = Lists.newArrayList();
@@ -99,9 +105,9 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void configureMessageConverters(
+            List<HttpMessageConverter<?>> converters) {
         converters.add(new MappingJackson2HttpMessageConverter()); // JSON
-        converters.add(new Jaxb2RootElementHttpMessageConverter()); // XML
     }
 
     @Bean
@@ -110,37 +116,38 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+    public void addArgumentResolvers(
+            List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(pageStatusHandlerMethodArgumentResolver());
         argumentResolvers.add(pageableHandlerMethodArgumentResolver());
     }
 
     @Bean
-    PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver() {
+    public PageableHandlerMethodArgumentResolver pageableHandlerMethodArgumentResolver() {
         return new PageableHandlerMethodArgumentResolver();
     }
 
     @Bean
-    PageStatusHandlerMethodArgumentResolver pageStatusHandlerMethodArgumentResolver() {
+    public PageStatusHandlerMethodArgumentResolver pageStatusHandlerMethodArgumentResolver() {
         return new PageStatusHandlerMethodArgumentResolver();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
-                new String[] { "/communities/**", "/users/**", "/posts/**" });
+        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor())
+                .addPathPatterns(new String[] { "/groups/**", "/users/**" });
         registry.addWebRequestInterceptor(pageStatusAutoPersistenceInterceptor());
         registry.addInterceptor(webContentInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
     }
 
     @Bean
-    PageStatusAutoPersistenceInterceptor pageStatusAutoPersistenceInterceptor() {
+    public PageStatusAutoPersistenceInterceptor pageStatusAutoPersistenceInterceptor() {
         return new PageStatusAutoPersistenceInterceptor();
     }
 
     @Bean
-    HandlerInterceptor localeChangeInterceptor() {
+    public HandlerInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName(PARAM_NAME);
         return localeChangeInterceptor;
@@ -154,14 +161,15 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
      * @return
      */
     @Bean
-    OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
+    public OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor() {
         OpenEntityManagerInViewInterceptor openEntityManagerInViewInterceptor = new OpenEntityManagerInViewInterceptor();
-        openEntityManagerInViewInterceptor.setEntityManagerFactory(entityManagerFactory);
+        openEntityManagerInViewInterceptor
+                .setEntityManagerFactory(entityManagerFactory);
         return openEntityManagerInViewInterceptor;
     }
 
     @Bean
-    WebContentInterceptor webContentInterceptor() {
+    public WebContentInterceptor webContentInterceptor() {
         WebContentInterceptor webContentInterceptor = new WebContentInterceptor();
         webContentInterceptor.setCacheSeconds(0);
         webContentInterceptor.setUseExpiresHeader(true);
@@ -171,12 +179,12 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    ObjectMapper objectMapper() {
+    public ObjectMapper objectMapper() {
         return new HibernateAwareObjectMapper();
     }
-    
+
     @Bean
-    LocaleResolver localeResolver() {
+    public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
         localeResolver.setDefaultLocale(Locale.ENGLISH);
         return localeResolver;
