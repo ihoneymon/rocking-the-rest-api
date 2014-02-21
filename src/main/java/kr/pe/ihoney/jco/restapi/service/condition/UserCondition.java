@@ -1,6 +1,5 @@
 package kr.pe.ihoney.jco.restapi.service.condition;
 
-import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +10,16 @@ import org.springframework.util.StringUtils;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = { "name", "type" })
-public class GroupCondition {
+@ToString(of = { "email", "name" })
+public class UserCondition {
+    private String email;
     private String name;
-    private GroupType type;
 
     public boolean hasName() {
         return StringUtils.hasText(name);
     }
-    
-    public boolean hasType() {
-        return null != type;
+
+    public boolean hasEmail() {
+        return StringUtils.hasText(email);
     }
 }

@@ -3,17 +3,28 @@
 <properties version="1.0">
 	<comment>rocking-the-group English view.message</comment>
 
-
 	<!-- Member -->
 	<entry key="member.require.email">회원의 이메일은 필수 입력항목입니다.</entry>
 	<entry key="member.require.name">회원의 이름은 필수 입력항목입니다.</entry>
-	
+
+	<!-- Member:Exception -->
+	<entry key="member.exception.exist.sameEmail">동일한 이메일의 사용자가 존재합니다.</entry>
+
 	<!-- Group -->
 	<entry key="group.require.name">그룹의 이름은 필수 입력항목입니다.</entry>
 	<entry key="group.require.owner">그룹의 소유자는 필수 입력항목입니다.</entry>
-	
+
+	<!-- Group:Exception -->
+	<entry key="group.exception.registerd.member">이미 등록된 회원입니다.</entry>
+	<entry key="group.exception.exist.sameName">동일한 이름의 그룹이 존재합니다.</entry>
+
 	<!-- Post -->
 	<entry key="post.require.title">포스트의 제목은 필수 입력항목입니다.</entry>
 	<entry key="post.require.article">포스트의 본문은 필수 입력항목입니다.</entry>
 	<entry key="post.require.group">포스트의 소속그룹은 필수 입력항목입니다.</entry>
+
+	<!-- Post:Exception -->
+	<entry key="post.exception.not.include.group">그룹의 문서가 아닙니다.</entry>
+	<entry key="post.exception.modify.only.creator">작성자만 수정가능합니다.</entry>
+	<entry key="post.exception.not.creator">작성자가 아닙니다.</entry>
 </properties>

@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ehcache xsi:noNamespaceSchemaLocation="ehcache.xsd"
-	updateCheck="true" monitoring="autodetect" dynamicConfig="true"
-	maxBytesLocalHeap="150M">
+<ehcache>
 
 	<diskStore path="java.io.tmpdir" />
 
-	<defaultCache
-		maxBytesLocalHeap="150M" eternal="false" timeToIdleSeconds="120"
-		timeToLiveSeconds="120" overflowToDisk="true" maxElementsOnDisk="10000000"
-		diskPersistent="false" diskExpiryThreadIntervalSeconds="120"
-		memoryStoreEvictionPolicy="LRU" />
-		
-	<cache name="cache:communities"
-		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
-		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+	<defaultCache maxBytesLocalHeap="150M" eternal="false"
+		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
+		maxElementsOnDisk="10000000" diskPersistent="false"
+		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="cache:users" maxBytesLocalHeap="30M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
-	<cache name="cache:community:detail"
-		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
-		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+	<cache name="cache:user:detail" maxBytesLocalHeap="5M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+		
+	<cache name="cache:groups" maxBytesLocalHeap="30M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		memoryStoreEvictionPolicy="LFU" />
+	<cache name="cache:group:detail" maxBytesLocalHeap="5M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 
-	<cache name="cache:users"
-		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
+	<cache name="cache:members"
+		maxBytesLocalHeap="20M" maxElementsOnDisk="1000" eternal="false"
 		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
-	<cache name="cache:user:detail"
+	<cache name="cache:member:detail"
 		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
 		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 		
-	<cache name="cache:posts"
-		maxBytesLocalHeap="40M" maxElementsOnDisk="1000" eternal="false"
-		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+	<cache name="cache:posts" maxBytesLocalHeap="40M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
-	<cache name="cache:post:detail"
-		maxBytesLocalHeap="10M" maxElementsOnDisk="1000" eternal="false"
-		overflowToDisk="true" timeToIdleSeconds="300" timeToLiveSeconds="600"
+	<cache name="cache:post:detail" maxBytesLocalHeap="10M"
+		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
+		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 </ehcache>

@@ -22,6 +22,7 @@ import org.springframework.validation.DataBinder;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.ServletRequestParameterPropertyValues;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.util.WebUtils;
@@ -72,13 +73,13 @@ public class PageStatusFactory {
 
         // request에 저장된 pageStatus가 있으면 꺼내기
         PageStatus pageStatus = (PageStatus) request.getAttribute(REQUEST_ATTRIBUTE_NAME,
-                WebRequest.SCOPE_REQUEST);
+                RequestAttributes.SCOPE_REQUEST);
 
         // FlashScope에서 pageStatus 생성
         if (pageStatus == null) {
             pageStatus = createFromFlashMap(servletRequest);
 
-            request.setAttribute(REQUEST_ATTRIBUTE_NAME, pageStatus, WebRequest.SCOPE_REQUEST);
+            request.setAttribute(REQUEST_ATTRIBUTE_NAME, pageStatus, RequestAttributes.SCOPE_REQUEST);
 
             logger.debug("found pageStatus in flashMap: {}", pageStatus);
         }
@@ -112,7 +113,7 @@ public class PageStatusFactory {
                     pageStatus.getSort(), attributes, queryString, pageableQueryString, jsonString,
                     pageableJsonString);
 
-            request.setAttribute(REQUEST_ATTRIBUTE_NAME, pageStatus, WebRequest.SCOPE_REQUEST);
+            request.setAttribute(REQUEST_ATTRIBUTE_NAME, pageStatus, RequestAttributes.SCOPE_REQUEST);
 
             logger.debug("created pageStatus from request: {}", pageStatus);
         }
