@@ -1,6 +1,6 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
@@ -22,16 +22,9 @@ public class UserTest {
     }
     
     @Test
-    public void 사용자_refreshToken_null로_변경하는경우_예외발생() {
-        User user = new User("tester", "test@test.email");
-        user.changeRefreshToken(null);
-        assertNull(user.getRefreshToken());
-    }
-    
-    @Test
     public void 사용자생성() {
         User user = new User("tester", "test@test.email");
-        assertThat(user.getName(), is("tester"));
-        assertThat(user.getEmail(), is("test@test.email"));
+        assertThat(user.getName(), isA(String.class));
+        assertThat(user.getEmail(), isA(String.class));
     }    
 }

@@ -1,26 +1,15 @@
 package kr.pe.ihoney.jco.restapi.service;
 
-import java.util.List;
-
-import kr.pe.ihoney.jco.restapi.domain.Community;
-import kr.pe.ihoney.jco.restapi.domain.Post;
 import kr.pe.ihoney.jco.restapi.domain.User;
+import kr.pe.ihoney.jco.restapi.service.condition.UserCondition;
+import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 
+import org.springframework.data.domain.Page;
 
-/**
- * 사용자 서비스
- * 
- * @author ihoneymon
- * 
- */
-public interface UserService {
+public interface UserService extends GeneralDomainService<User> {
+
+    Page<User> getUsers(UserCondition condition, PageStatus pageStatus);
 
     User getUser(User user);
-
-    User save(User bind);
-
-    List<Community> findCommunitiesOfUser(User user);
-
-    List<Post> findPostsOfUser(User user);
 
 }

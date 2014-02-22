@@ -21,15 +21,15 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @MappedSuperclass
 @ToString(of={"createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"})
-public abstract class DomainAuditable implements Auditable<User, Long> {
+public abstract class DomainAuditable implements Auditable<Member, Long> {
     private static final long serialVersionUID = -410212408783103422L;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User createdBy;
+    private Member createdBy;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    private User lastModifiedBy;
+    private Member lastModifiedBy;
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
 
@@ -39,12 +39,12 @@ public abstract class DomainAuditable implements Auditable<User, Long> {
     }
 
     @Override
-    public User getCreatedBy() {
+    public Member getCreatedBy() {
         return this.createdBy;
     }
 
     @Override
-    public void setCreatedBy(User createdBy) {
+    public void setCreatedBy(Member createdBy) {
         Assert.notNull(createdBy, "domain.require.createdBy");
         this.createdBy = createdBy;
     }
@@ -62,12 +62,12 @@ public abstract class DomainAuditable implements Auditable<User, Long> {
     }
 
     @Override
-    public User getLastModifiedBy() {
+    public Member getLastModifiedBy() {
         return this.lastModifiedBy;
     }
 
     @Override
-    public void setLastModifiedBy(User lastModifiedBy) {
+    public void setLastModifiedBy(Member lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
 

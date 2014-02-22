@@ -2,9 +2,9 @@ package kr.pe.ihoney.jco.restapi.web.form;
 
 import javax.validation.constraints.NotNull;
 
-import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Group;
 import kr.pe.ihoney.jco.restapi.domain.User;
-import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
+import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,15 +20,15 @@ public class CommunityForm {
     @NotNull
     private String name; // 커뮤니티명
     @NotNull
-    private CommunityType type; // 커뮤니티유형
+    private GroupType type; // 커뮤니티유형
     @NotNull
     private User manager; // 관리자
     
-    public Community createCommunity() {
-        return new Community(getName(), getType(), getManager());
+    public Group createCommunity() {
+        return new Group(getName(), getType(), getManager());
     }
 
-    public Community bind(Community target) {
+    public Group bind(Group target) {
         target.setName(this.name);
         return target;
     }

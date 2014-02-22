@@ -38,8 +38,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = { "community", "user" }, callSuper = false)
-@ToString(of = { "id", "community", "user" }, callSuper = false)
+@EqualsAndHashCode(of = { "group", "user" })
+@ToString(of = { "id", "group", "user" })
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @XmlRootElement(name = "member")
 public class Member implements Serializable {
@@ -49,25 +49,26 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Getter
     @Column(unique = true)
-    private String nickName;            // 별명
+    private String nickName; // 별명
     @Getter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Community community;        // 커뮤니티
+    private Group group; // 그룹
     @Getter
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    private User user;                  // 사용자
+    private User user; // 사용자
     @Getter
     @JsonSerialize(using = DateTimeSerializer.class)
     @XmlJavaTypeAdapter(type = DateTime.class, value = DateTimeAdapter.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public Member(String nickName, Community community, User user) {
+    public Member(String nickName, Group group, User user) {
         Assert.hasText(nickName, "member.require.nickName");
-        Assert.notNull(community, "member.require.community");
+        Assert.notNull(group, "member.require.group");
         Assert.notNull(user, "member.require.user");
-        this.community = community;
+        this.group = group;
         this.user = user;
     }
 

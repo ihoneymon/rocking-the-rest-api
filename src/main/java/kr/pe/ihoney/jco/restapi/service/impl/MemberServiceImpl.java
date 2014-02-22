@@ -1,70 +1,78 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
-import java.util.List;
-
-import kr.pe.ihoney.jco.restapi.domain.Community;
-import kr.pe.ihoney.jco.restapi.domain.Member;
-import kr.pe.ihoney.jco.restapi.domain.QMember;
-import kr.pe.ihoney.jco.restapi.domain.User;
-import kr.pe.ihoney.jco.restapi.repository.MemberRepository;
-import kr.pe.ihoney.jco.restapi.service.MemberService;
-import kr.pe.ihoney.jco.restapi.service.PostService;
-import kr.pe.ihoney.jco.restapi.service.condition.MemberCondition;
-import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
-import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 
-@Slf4j
+import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
+import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Member;
+import kr.pe.ihoney.jco.restapi.domain.QMember;
+import kr.pe.ihoney.jco.restapi.repository.MemberRepository;
+import kr.pe.ihoney.jco.restapi.service.MemberService;
+import kr.pe.ihoney.jco.restapi.service.condition.MemberCondition;
+import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
+
 @Service
 public class MemberServiceImpl implements MemberService {
+
     @Autowired
     private MemberRepository memberRepository;
-    @Autowired
-    private PostService postService;
-
-    @Transactional(readOnly = true)
-    @Cacheable(value = "cache:members", key = "'members'.concat(':').concat('#condition.toString()').concat(':').concat(#pageStatus.pageNumber.toString())")
-    public Page<Member> findMembersByCommunity(Community community, MemberCondition condition, PageStatus pageStatus) {
-        log.debug(">> Find Members of community: {}", community);
-        BooleanBuilder builder = memberBuilder(community);
-        return memberRepository.findAll(builder, pageStatus);
-    }
-
-    private BooleanBuilder memberBuilder(Community community) {
-        QMember qMember = QMember.member;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qMember.community.eq(community));
-        return builder;
-    }
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public Member save(Member member) {
+    public Member save(Member member) throws RestApiException {
+        Member existMember = memberRepository.findByNickName(member
+                .getNickName());
+        if (null != existMember
+                && existMember.getGroup().equals(member.getGroup())) {
+            throw new RestApiException(
+                    "member.exception.dont.duplicate.registered");
+        }
         return memberRepository.saveAndFlush(member);
     }
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    @CacheEvict(value = "cache:member:detail", key = "'member'.concat(':').concat(#member.id.toString())")
+    public Member modify(Member member) {
+        return memberRepository.saveAndFlush(member);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
     public void delete(Member member) {
-        postService.deletePostsOfMember(member);
         memberRepository.delete(member);
         memberRepository.flush();
     }
 
     @Override
-    @Transactional(readOnly = true)
-    @Cacheable(value = "cache:member:detail", key = "'member'.concat(':').concat(#member.id.toString())")
-    public Member getMember(Member member) {
-        return memberRepository.findOne(member.getId());
+    public Page<Member> getMembers(Group group, MemberCondition condition,
+            PageStatus pageStatus) {
+        QMember qMember = QMember.member;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(qMember.group.eq(group));
+
+        if (condition.hasNickName()) {
+            builder.and(qMember.nickName.contains(condition.getNickName()));
+        }
+        if (null == pageStatus.getSort()) {
+            pageStatus = pageStatus.addSort(new Sort(Direction.DESC, "id"));
+        }
+
+        return memberRepository.findAll(builder, pageStatus);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "cache:member:detail", key = "'member'.concat(':').concat(#member.toString())")
+    public Member getMember(Member member) {
+        return memberRepository.findByNickName(member.getNickName());
+    }
+
 }
