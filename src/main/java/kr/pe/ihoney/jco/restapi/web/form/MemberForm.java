@@ -15,11 +15,15 @@ import lombok.NoArgsConstructor;
 public class MemberForm {
     private String nickName;
     private User user;
-    private Group community;
-    
+    private Group group;
+
     public Member createMember() {
-        Assert.notNull(this.community, "member.require.group");
-        return new Member(this.nickName, this.community, this.user);
+        return new Member(this.nickName, this.group, this.user);
+    }
+
+    public Member createMember(Group group) {
+        Assert.notNull(group, "member.require.group");
+        return new Member(this.nickName, group, this.user);
     }
 
     public Member bind(Member target) {

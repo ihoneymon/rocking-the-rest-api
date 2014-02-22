@@ -49,6 +49,7 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Getter
     @Column(unique = true)
     private String nickName; // 별명
     @Getter

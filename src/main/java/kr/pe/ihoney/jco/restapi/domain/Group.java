@@ -77,9 +77,15 @@ public class Group implements Serializable {
     public Group(String name, GroupType type, User createdBy) {
         setName(name);
         setType(type);
-        this.createdBy = createdBy;
+        setCreatedBy(createdBy);
         this.createdDate = Calendar.getInstance().getTime();
         this.members = Sets.newHashSet();
+    }
+
+    private Group setCreatedBy(User createdBy) {
+        Assert.notNull(createdBy, "group.require.createdBy");
+        this.createdBy = createdBy;
+        return this;
     }
 
     public Group setName(String name) {
