@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlElement;
@@ -67,11 +69,13 @@ public class Group implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member manager; // 관리자
     @Getter
+    @OneToOne
     private User createdBy;
     @Getter
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
     @Getter
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<Member> members;
 
     public Group(String name, GroupType type, User createdBy) {
@@ -105,9 +109,9 @@ public class Group implements Serializable {
         this.manager = manager;
         return this;
     }
-    
+
     public Group addMember(Member member) throws RestApiException {
-        if(members.contains(member)) {
+        if (members.contains(member)) {
             throw new RestApiException("group.exception.registered.member");
         }
         members.add(member);

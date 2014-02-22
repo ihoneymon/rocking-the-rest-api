@@ -35,7 +35,7 @@ public class PostController {
 
     @RequestMapping(value = "/groups/{group}/posts", method = RequestMethod.GET)
     public ResponseEntity getPostsOfGroup(@PathVariable Group group,
-            @RequestBody PostCondition condition, PageStatus pageStatus) {
+            PostCondition condition, PageStatus pageStatus) {
         Page<Post> page = postService.getPostsOfGroup(group, condition,
                 pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),

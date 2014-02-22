@@ -34,7 +34,7 @@ public class MemberController {
 
     @RequestMapping(value = "/groups/{group}/members", method = RequestMethod.GET)
     public ResponseEntity getMembers(@PathVariable Group group,
-            @RequestBody MemberCondition condition, PageStatus pageStatus) {
+            MemberCondition condition, PageStatus pageStatus) {
         Page<Member> page = memberService.getMembers(group, condition,
                 pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),
@@ -83,7 +83,7 @@ public class MemberController {
         if (!group.getMembers().contains(member)) {
             throw new RestApiException("member.not.incmlude.group");
         }
-        
+
         memberService.delete(member);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

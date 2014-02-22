@@ -9,6 +9,7 @@ import kr.pe.ihoney.jco.restapi.service.condition.GroupCondition;
 import kr.pe.ihoney.jco.restapi.web.form.GroupForm;
 import kr.pe.ihoney.jco.restapi.web.form.GroupNotice;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.MessageSourceAccessor;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @SuppressWarnings({ "rawtypes", "unchecked" })
 public class GroupController {
@@ -31,7 +33,7 @@ public class GroupController {
     private MessageSourceAccessor messageSourceAccessor;
 
     @RequestMapping(value = "/groups", method = RequestMethod.GET)
-    public ResponseEntity getGroups(@RequestBody GroupCondition condition,
+    public ResponseEntity getGroups(GroupCondition condition,
             PageStatus pageStatus) {
         Page<Group> page = groupService.getGroups(condition, pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),
@@ -44,7 +46,7 @@ public class GroupController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-
+        log.debug(">> GroupForm: {}", form);
         try {
             return new ResponseEntity(groupService.save(form.createGroup()),
                     HttpStatus.CREATED);

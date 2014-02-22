@@ -30,7 +30,7 @@ public class UserController {
     private MessageSourceAccessor messageSourceAccessor;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity getUsers(@RequestBody UserCondition condition,
+    public ResponseEntity getUsers(UserCondition condition,
             PageStatus pageStatus) {
         Page<User> page = userService.getUsers(condition, pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),
