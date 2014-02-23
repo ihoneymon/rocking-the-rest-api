@@ -2,9 +2,11 @@ package kr.pe.ihoney.jco.restapi.service.impl;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.domain.Community;
+import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.QCommunity;
 import kr.pe.ihoney.jco.restapi.repository.CommunityRepository;
 import kr.pe.ihoney.jco.restapi.service.CommunityService;
+import kr.pe.ihoney.jco.restapi.service.MemberService;
 import kr.pe.ihoney.jco.restapi.service.condition.CommunityCondition;
 import kr.pe.ihoney.jco.restapi.web.support.view.PageStatus;
 
@@ -24,6 +26,8 @@ public class CommunityServiceImpl implements CommunityService {
 
     @Autowired
     private CommunityRepository communityRepository;
+    @Autowired
+    private MemberService memberService;
 
     @Override
     @Transactional(readOnly = false, rollbackFor = Exception.class)
@@ -31,7 +35,12 @@ public class CommunityServiceImpl implements CommunityService {
         if (null != communityRepository.findByName(community.getName())) {
             throw new RestApiException("group.exception.exist.sameName");
         }
-        return communityRepository.saveAndFlush(community);
+        communityRepository.save(community);
+        Member manager = memberService.save(new Member(community.getName() + " 관리자", community, community.getCreatedBy()));
+        community.setManager(manager);
+        communityRepository.saveAndFlush(community);
+        
+        return community;
     }
 
     @Override

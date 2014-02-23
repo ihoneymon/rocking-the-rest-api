@@ -6,7 +6,7 @@ import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
 import org.junit.Before;
 import org.junit.Test;
 
-public class GroupTest {
+public class CommunityTest {
     private User manager;
 
     @Before

@@ -7,10 +7,9 @@ import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created with IntelliJ IDEA.
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 12:04
+ * Community 저장소
+ * @author ihoneymon
+ *
  */
 @Repository
 public interface CommunityRepository extends JpaRepository<Community, Long>, QueryDslPredicateExecutor<Community> {

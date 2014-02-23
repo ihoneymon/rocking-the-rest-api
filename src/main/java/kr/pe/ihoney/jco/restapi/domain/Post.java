@@ -30,9 +30,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = { "title" }, callSuper = false)
+@EqualsAndHashCode(of = { "community", "title" }, callSuper = false)
 @ToString(of = { "id", "type", "title", "article" }, callSuper = false)
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler", "community" })
 @XmlRootElement(name = "post")
 public class Post extends DomainAuditable {
     private static final long serialVersionUID = -9171893825408773970L;
@@ -51,16 +51,14 @@ public class Post extends DomainAuditable {
     private String title; // 제목
     @Getter
     private String article; // 본문
-    @Getter
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Member member;
 
     public Post(Community community, String title, String article, Member member) {
         setGroup(community);
         setTitle(title);
         setArticle(article);
-        setMember(member);
         this.type = PostType.PRIVATE;
+        setCreatedBy(member);
+        setCreatedDate(DateTime.now());
     }
 
     private Post setGroup(Community community) {
@@ -81,18 +79,12 @@ public class Post extends DomainAuditable {
         return this;
     }
 
-    public Post setMember(Member member) {
-        Assert.notNull(member, "post.require.member");
-        this.member = member;
-        setCreatedBy(member);
-        setCreatedDate(DateTime.now());
-        return this;
+    public boolean doesOpen(Member member) {
+        return (PostType.PRIVATE == getType()) ? getCreatedBy().equals(member)
+                : true;
     }
 
-    public boolean doesOpen(Member member) {
-        if (PostType.PRIVATE == getType()) {
-            return this.member.equals(member);
-        }
-        return true;
+    public Long getCommunityId() {
+        return community.getId();
     }
 }

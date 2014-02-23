@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
+import kr.pe.ihoney.jco.restapi.web.support.serializer.DateSerializer;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,6 +31,7 @@ import lombok.ToString;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * 커뮤니티 도메인
@@ -65,6 +67,7 @@ public class Community implements Serializable {
     @ManyToOne(fetch=FetchType.LAZY)
     private User createdBy;
     @Getter
+    @JsonSerialize(using = DateSerializer.class)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
@@ -98,5 +101,4 @@ public class Community implements Serializable {
         this.manager = manager;
         return this;
     }
-
 }
