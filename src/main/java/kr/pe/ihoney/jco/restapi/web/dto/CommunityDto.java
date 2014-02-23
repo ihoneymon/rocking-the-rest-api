@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @XmlRootElement(name="communities")
 public class CommunityDto {
-    private List<Group> community;
+    private List<Community> community;
 
-    public CommunityDto(List<Group> community) {
+    public CommunityDto(List<Community> community) {
         this.community = community;
     }
 }

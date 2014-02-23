@@ -9,8 +9,8 @@
 	<entry key="code.postType.publish">출판</entry>
 
 	<!-- groupType Message -->
-	<entry key="code.groupType.private">비공개</entry>
-	<entry key="com.groupType.public">공개</entry>
+	<entry key="code.communityType.private">비공개</entry>
+	<entry key="com.communityType.public">공개</entry>
 
 	<!-- Domain -->
 	<entry key="domain.require.createdBy">생성자는 필수 입력항목입니다.</entry>
@@ -24,7 +24,7 @@
 
 	<!-- Member -->
 	<entry key="member.require.nickName">별명은 필수 입력항목입니다.</entry>
-	<entry key="member.require.group">커뮤니티는 필수 입력항목입니다.</entry>
+	<entry key="member.require.commuity">커뮤니티는 필수 입력항목입니다.</entry>
 	<entry key="member.require.user">사용자는 필수 입력항목입니다.</entry>
 
 	<!-- Post -->

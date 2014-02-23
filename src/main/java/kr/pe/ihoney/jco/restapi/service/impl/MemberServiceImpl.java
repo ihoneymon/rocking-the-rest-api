@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mysema.query.BooleanBuilder;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.QMember;
 import kr.pe.ihoney.jco.restapi.repository.MemberRepository;
@@ -31,7 +31,7 @@ public class MemberServiceImpl implements MemberService {
         Member existMember = memberRepository.findByNickName(member
                 .getNickName());
         if (null != existMember
-                && existMember.getGroup().equals(member.getGroup())) {
+                && existMember.getCommunity().equals(member.getCommunity())) {
             throw new RestApiException(
                     "member.exception.dont.duplicate.registered");
         }
@@ -52,11 +52,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<Member> getMembers(Group group, MemberCondition condition,
+    public Page<Member> getMembers(Community community, MemberCondition condition,
             PageStatus pageStatus) {
         QMember qMember = QMember.member;
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qMember.group.eq(group));
+        builder.and(qMember.community.eq(community));
 
         if (condition.hasNickName()) {
             builder.and(qMember.nickName.contains(condition.getNickName()));

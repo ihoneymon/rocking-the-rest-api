@@ -1,7 +1,7 @@
 package kr.pe.ihoney.jco.restapi.domain;
 
 import static org.junit.Assert.*;
-import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
+import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,34 +9,34 @@ import org.junit.Test;
 public class PostTest {
 
     private User user;
-    private Group group;
+    private Community community;
     private Member member;
 
     @Before
     public void setUp() {
         user = new User("tester", "test@test.email");
-        group = new Group("Test Team", GroupType.PUBLIC, user);
-        member = new Member("Tester", group, user);
+        community = new Community("Test Team", CommunityType.PUBLIC, user);
+        member = new Member("Tester", community, user);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void 제목이_null인_경우() {
         @SuppressWarnings("unused")
-        Post post = new Post(group, null, "article", member);
+        Post post = new Post(community, null, "article", member);
         fail();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void 본문이_null인_경우() {
         @SuppressWarnings("unused")
-        Post post = new Post(group, "title", null, member);
+        Post post = new Post(community, "title", null, member);
         fail();
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void 작성자가_null인_경우() {
         @SuppressWarnings("unused")
-        Post post = new Post(group, "title", "article", null);
+        Post post = new Post(community, "title", "article", null);
         fail();
     }
 

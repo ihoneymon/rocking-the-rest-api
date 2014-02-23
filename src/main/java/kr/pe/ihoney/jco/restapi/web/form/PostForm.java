@@ -2,7 +2,7 @@ package kr.pe.ihoney.jco.restapi.web.form;
 
 import javax.validation.constraints.NotNull;
 
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.Post;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class PostForm {
     @NotNull
-    private Group group;
+    private Community community;
     @NotNull
     private String title;
     @NotNull
@@ -25,7 +25,7 @@ public class PostForm {
     private Member createdBy;
 
     public Post createPost() {
-        return new Post(group, title, article, createdBy);
+        return new Post(community, title, article, createdBy);
     }
 
     public Post bind(Post target) {
@@ -34,7 +34,7 @@ public class PostForm {
         return target;
     }
 
-    public Post createPost(Group group) {
-        return new Post(group, this.title, this.article, this.createdBy);
+    public Post createPost(Community community) {
+        return new Post(community, this.title, this.article, this.createdBy);
     }
 }

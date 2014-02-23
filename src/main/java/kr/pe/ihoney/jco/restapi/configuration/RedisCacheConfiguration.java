@@ -152,8 +152,8 @@ public class RedisCacheConfiguration implements CachingConfigurer {
         Map<String, Long> cacheExpires = Maps.newConcurrentMap();
         cacheExpires.put("cache:users", CACHE_EXPIRE_SECONDS);
         cacheExpires.put("cache:user:detail", CACHE_EXPIRE_SECONDS);
-        cacheExpires.put("cache:groups", CACHE_EXPIRE_SECONDS);
-        cacheExpires.put("cache:group:detail", CACHE_EXPIRE_SECONDS);
+        cacheExpires.put("cache:communities", CACHE_EXPIRE_SECONDS);
+        cacheExpires.put("cache:community:detail", CACHE_EXPIRE_SECONDS);
         cacheExpires.put("cache:member:detail", CACHE_EXPIRE_SECONDS);
         cacheExpires.put("cache:members", CACHE_EXPIRE_SECONDS);
         cacheExpires.put("cache:post:detail", CACHE_EXPIRE_SECONDS);

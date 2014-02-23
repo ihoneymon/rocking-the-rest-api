@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.common.pagination.Paginations;
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.service.MemberService;
 import kr.pe.ihoney.jco.restapi.service.condition.MemberCondition;
@@ -33,28 +33,28 @@ public class MemberController {
     private MessageSourceAccessor messageSourceAccessor;
 
     @RequestMapping(value = "/groups/{group}/members", method = RequestMethod.GET)
-    public ResponseEntity getMembers(@PathVariable Group group,
+    public ResponseEntity getMembers(@PathVariable Community community,
             MemberCondition condition, PageStatus pageStatus) {
-        Page<Member> page = memberService.getMembers(group, condition,
+        Page<Member> page = memberService.getMembers(community, condition,
                 pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),
                 pageStatus), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/groups/{group}/members", method = RequestMethod.POST)
-    public ResponseEntity saveMember(@PathVariable Group group,
+    public ResponseEntity saveMember(@PathVariable Community community,
             @Valid @RequestBody MemberForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(memberService.save(form.createMember(group)),
+        return new ResponseEntity(memberService.save(form.createMember(community)),
                 HttpStatus.OK);
     }
 
     @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.GET)
-    public ResponseEntity getMember(@PathVariable Group group,
+    public ResponseEntity getMember(@PathVariable Community community,
             @PathVariable Member member) {
-        if (!group.getMembers().contains(member)) {
+        if (!member.getCommunity().equals(community)) {
             throw new RestApiException("member.not.incmlude.group");
         }
 
@@ -63,13 +63,13 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.PUT)
-    public ResponseEntity modifyMember(@PathVariable Group group,
+    public ResponseEntity modifyMember(@PathVariable Community community,
             @PathVariable Member member, @Valid @RequestBody MemberForm form,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        if (!group.getMembers().contains(member)) {
+        if (!member.getCommunity().equals(community)) {
             throw new RestApiException("member.not.incmlude.group");
         }
 
@@ -78,9 +78,9 @@ public class MemberController {
     }
 
     @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteMember(@PathVariable Group group,
+    public ResponseEntity deleteMember(@PathVariable Community community,
             @PathVariable Member member) {
-        if (!group.getMembers().contains(member)) {
+        if (!member.getCommunity().equals(community)) {
             throw new RestApiException("member.not.incmlude.group");
         }
 

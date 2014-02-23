@@ -2,14 +2,14 @@ package kr.pe.ihoney.jco.restapi.domain.type;
 
 import org.springframework.core.Ordered;
 
-public enum GroupType implements Ordered {
-    PRIVATE("code.groupType.private", 1),
-    PUBLIC("com.groupType.public", 2); 
+public enum CommunityType implements Ordered {
+    PRIVATE("code.communityType.private", 1),
+    PUBLIC("com.communityType.public", 2); 
 
     private String code;
     private int order;
 
-    GroupType(String code, int order) {
+    CommunityType(String code, int order) {
         this.code = code;
         this.order = order;
     }

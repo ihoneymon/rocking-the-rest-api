@@ -4,7 +4,7 @@ import javax.validation.Valid;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
 import kr.pe.ihoney.jco.restapi.common.pagination.Paginations;
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.Post;
 import kr.pe.ihoney.jco.restapi.service.PostService;
@@ -34,29 +34,29 @@ public class PostController {
     private MessageSourceAccessor messageSourceAccessor;
 
     @RequestMapping(value = "/groups/{group}/posts", method = RequestMethod.GET)
-    public ResponseEntity getPostsOfGroup(@PathVariable Group group,
+    public ResponseEntity getPostsOfGroup(@PathVariable Community community,
             PostCondition condition, PageStatus pageStatus) {
-        Page<Post> page = postService.getPostsOfGroup(group, condition,
+        Page<Post> page = postService.getPostsOfGroup(community, condition,
                 pageStatus);
         return new ResponseEntity(Paginations.pagination(page.getContent(),
                 pageStatus), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/groups/{group}/posts", method = RequestMethod.POST)
-    public ResponseEntity savePostOfGroup(@PathVariable Group group,
+    public ResponseEntity savePostOfGroup(@PathVariable Community community,
             @Valid @RequestBody PostForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity(postService.save(form.createPost(group)),
+        return new ResponseEntity(postService.save(form.createPost(community)),
                 HttpStatus.OK);
     }
 
     @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.GET)
-    public ResponseEntity getPostOfGroup(@PathVariable Group group,
+    public ResponseEntity getPostOfGroup(@PathVariable Community community,
             @PathVariable Post post) {
-        if (!post.getGroup().equals(group)) {
+        if (!post.getCommunity().equals(community)) {
             throw new RestApiException("post.exception.not.includeGroup");
         }
 
@@ -64,13 +64,13 @@ public class PostController {
     }
 
     @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.PUT)
-    public ResponseEntity modifyPost(@PathVariable Group group,
+    public ResponseEntity modifyPost(@PathVariable Community community,
             @PathVariable Post post, @Valid @RequestBody PostForm form,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        if (!post.getGroup().equals(group)) {
+        if (!post.getCommunity().equals(community)) {
             throw new RestApiException("post.exception.not.includeGroup");
         }
         return new ResponseEntity(postService.modify(form.bind(post)),
@@ -78,9 +78,9 @@ public class PostController {
     }
 
     @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.DELETE)
-    public ResponseEntity deletePost(@PathVariable Group group,
+    public ResponseEntity deletePost(@PathVariable Community community,
             @PathVariable Post post) {
-        if (!post.getGroup().equals(group)) {
+        if (!post.getCommunity().equals(community)) {
             throw new RestApiException("post.exception.not.includeGroup");
         }
         postService.delete(post);
@@ -88,21 +88,21 @@ public class PostController {
     }
 
     @RequestMapping(value = "/groups/{group}/members/{member}/posts", method = RequestMethod.GET)
-    public ResponseEntity getPostsOfMemberInGroup(@PathVariable Group group,
+    public ResponseEntity getPostsOfMemberInGroup(@PathVariable Community community,
             @PathVariable Member member, @RequestBody PostCondition condition,
             PageStatus pageStatus) {
-        if (!group.getMembers().contains(member)) {
+        if (!member.getCommunity().equals(community)) {
             throw new RestApiException("member.not.incmlude.group");
         }
 
-        return new ResponseEntity(postService.getPostsOfMemberInGroup(group,
+        return new ResponseEntity(postService.getPostsOfMemberInGroup(community,
                 member, condition, pageStatus), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/groups/{group}/members/{member}/posts/{post}", method = RequestMethod.GET)
-    public ResponseEntity getPostOfMemberInGroup(@PathVariable Group group,
+    public ResponseEntity getPostOfMemberInGroup(@PathVariable Community community,
             @PathVariable Member member, @PathVariable Post post) {
-        if (!group.getMembers().contains(member)) {
+        if (!member.getCommunity().equals(community)) {
             throw new RestApiException("member.not.incmlude.group");
         }
         if (!post.getCreatedBy().equals(member)) {

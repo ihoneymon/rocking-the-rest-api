@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,8 +37,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
  */
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EqualsAndHashCode(of = { "group", "user" })
-@ToString(of = { "id", "group", "user" })
+@EqualsAndHashCode(of = { "community", "user" })
+@ToString(of = { "id", "community", "user" })
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 @XmlRootElement(name = "member")
 public class Member implements Serializable {
@@ -54,9 +53,9 @@ public class Member implements Serializable {
     private String nickName; // 별명
     @Getter
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    private Group group; // 그룹
+    private Community community; // 그룹
     @Getter
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user; // 사용자
     @Getter
     @JsonSerialize(using = DateTimeSerializer.class)
@@ -64,11 +63,11 @@ public class Member implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public Member(String nickName, Group group, User user) {
+    public Member(String nickName, Community community, User user) {
         Assert.hasText(nickName, "member.require.nickName");
-        Assert.notNull(group, "member.require.group");
+        Assert.notNull(community, "member.require.commuity");
         Assert.notNull(user, "member.require.user");
-        this.group = group;
+        this.community = community;
         this.user = user;
     }
 

@@ -1,15 +1,15 @@
 package kr.pe.ihoney.jco.restapi.service.condition;
 
-import kr.pe.ihoney.jco.restapi.domain.type.GroupType;
+import kr.pe.ihoney.jco.restapi.domain.type.CommunityType;
 
 import org.springframework.util.StringUtils;
 
 import lombok.Data;
 
 @Data
-public class GroupCondition {
+public class CommunityCondition {
     private String name;
-    private GroupType type;
+    private CommunityType type;
 
     public boolean hasName() {
         return StringUtils.hasText(name);

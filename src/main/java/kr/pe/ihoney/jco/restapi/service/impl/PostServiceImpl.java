@@ -1,7 +1,7 @@
 package kr.pe.ihoney.jco.restapi.service.impl;
 
 import kr.pe.ihoney.jco.restapi.common.exception.RestApiException;
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.Post;
 import kr.pe.ihoney.jco.restapi.domain.QPost;
@@ -48,11 +48,11 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "cache:posts", key = "'posts'.concat(':').concat(#group.toString()).concat(':').concat(#condition.toString()).concat(':').concat(#pageStatus.pageableQueryString)")
-    public Page<Post> getPostsOfGroup(Group group, PostCondition condition,
+    public Page<Post> getPostsOfGroup(Community community, PostCondition condition,
             PageStatus pageStatus) {
         QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qPost.group.eq(group));
+        builder.and(qPost.community.eq(community));
 
         if (condition.hasTitle()) {
             builder.and(qPost.title.contains(condition.getTitle()));
@@ -76,11 +76,11 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<Post> getPostsOfMemberInGroup(Group group, Member member,
+    public Page<Post> getPostsOfMemberInGroup(Community community, Member member,
             PostCondition condition, PageStatus pageStatus) {
         QPost qPost = QPost.post;
         BooleanBuilder builder = new BooleanBuilder();
-        builder.and(qPost.group.eq(group));
+        builder.and(qPost.community.eq(community));
         builder.and(qPost.createdBy.eq(member));
 
         if (condition.hasTitle()) {

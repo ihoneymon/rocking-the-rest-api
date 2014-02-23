@@ -17,11 +17,11 @@
 		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
 	
-	<cache name="cache:groups" maxBytesLocalHeap="20M"
+	<cache name="cache:communities" maxBytesLocalHeap="20M"
 		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
 		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />
-	<cache name="cache:group:detail" maxBytesLocalHeap="10M"
+	<cache name="cache:community:detail" maxBytesLocalHeap="10M"
 		maxElementsOnDisk="1000" eternal="false" overflowToDisk="true"
 		timeToIdleSeconds="300" timeToLiveSeconds="600"
 		memoryStoreEvictionPolicy="LFU" />

@@ -43,7 +43,7 @@ public class Post extends DomainAuditable {
     private Long id;
     @Getter
     @ManyToOne(fetch = FetchType.LAZY)
-    private Group group;
+    private Community community;
     @Getter
     @Enumerated(EnumType.STRING)
     private PostType type;
@@ -55,17 +55,17 @@ public class Post extends DomainAuditable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Member member;
 
-    public Post(Group group, String title, String article, Member member) {
-        setGroup(group);
+    public Post(Community community, String title, String article, Member member) {
+        setGroup(community);
         setTitle(title);
         setArticle(article);
         setMember(member);
         this.type = PostType.PRIVATE;
     }
 
-    private Post setGroup(Group group) {
-        Assert.notNull(group, "post.require.group");
-        this.group = group;
+    private Post setGroup(Community community) {
+        Assert.notNull(community, "post.require.group");
+        this.community = community;
         return this;
     }
 

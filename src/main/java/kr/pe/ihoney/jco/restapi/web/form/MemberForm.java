@@ -2,7 +2,7 @@ package kr.pe.ihoney.jco.restapi.web.form;
 
 import org.springframework.util.Assert;
 
-import kr.pe.ihoney.jco.restapi.domain.Group;
+import kr.pe.ihoney.jco.restapi.domain.Community;
 import kr.pe.ihoney.jco.restapi.domain.Member;
 import kr.pe.ihoney.jco.restapi.domain.User;
 import lombok.AllArgsConstructor;
@@ -15,15 +15,15 @@ import lombok.NoArgsConstructor;
 public class MemberForm {
     private String nickName;
     private User user;
-    private Group group;
+    private Community community;
 
     public Member createMember() {
-        return new Member(this.nickName, this.group, this.user);
+        return new Member(this.nickName, this.community, this.user);
     }
 
-    public Member createMember(Group group) {
-        Assert.notNull(group, "member.require.group");
-        return new Member(this.nickName, group, this.user);
+    public Member createMember(Community community) {
+        Assert.notNull(community, "member.require.commuity");
+        return new Member(this.nickName, community, this.user);
     }
 
     public Member bind(Member target) {
