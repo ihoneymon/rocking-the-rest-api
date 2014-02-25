@@ -26,6 +26,25 @@ $ npm install
 $ node app &
 ```
 
+#### REST API의 실행방법
+> View가 전혀 사용되지 않았기 때문에, 실제로 내장 톰캣 실행후 안내되는 경로로 접근시에 볼 수 있는 내용이 없다. 정상동작하고 있는지 확인하려면 jQuery 를 이용해서 ajax 통신으로 확인해야 한다.
+
+```javascript
+$.ajax({
+	url: "http://localhost:8080/rocking-the-rest-api/users",
+    method: "get",
+    dataType: "json",
+    contentType: "application/json",
+    success: function(data) {console.log(data)},
+    error: function(data) {console.log(data)}
+});
+```
+내가 REST API를 만든 후에 테스트의 목적으로 실행하는 스크립트의 기본적인 형태다. 자바 객체의 XML 처리는 JSON에 비해서 약간 더 귀찮은 것들이 많은 탓에 xml 데이터는 크게 사용하지 않는다. 프론트엔드쪽에서도 XML 데이터 처리가 더 효과적이지 않은 이상은 JSON이 더 편하지 않을까?
+
+#### I/O docs를 이용해서 REST API 문서화를 할 수 있는지 살펴보자.
+* [http://api.ihoney.pe.kr:3000](http://api.ihoney.pe.kr:3000)
+	* 이번 발표에서 소개한 I/O docs 를 실제로 'Rocking the REST API'에 맞춰 작성봤다. 
+
 #### 사용된 것들
 * [gradle](http://www.gradle.org/) 1.10
 * [Spring Framework](http://projects.spring.io/spring-framework/) 4.0.1.RELEASE
