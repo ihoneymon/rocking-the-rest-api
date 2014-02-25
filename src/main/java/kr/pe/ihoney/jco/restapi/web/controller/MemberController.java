@@ -32,7 +32,7 @@ public class MemberController {
     @Autowired
     private MessageSourceAccessor messageSourceAccessor;
 
-    @RequestMapping(value = "/groups/{group}/members", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/members", method = RequestMethod.GET)
     public ResponseEntity getMembers(@PathVariable Community community,
             MemberCondition condition, PageStatus pageStatus) {
         Page<Member> page = memberService.getMembers(community, condition,
@@ -41,7 +41,7 @@ public class MemberController {
                 pageStatus), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/members", method = RequestMethod.POST)
+    @RequestMapping(value = "/communities/{community}/members", method = RequestMethod.POST)
     public ResponseEntity saveMember(@PathVariable Community community,
             @Valid @RequestBody MemberForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -51,7 +51,7 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/members/{member}", method = RequestMethod.GET)
     public ResponseEntity getMember(@PathVariable Community community,
             @PathVariable Member member) {
         if (!member.getCommunity().equals(community)) {
@@ -62,7 +62,7 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/communities/{community}/members/{member}", method = RequestMethod.PUT)
     public ResponseEntity modifyMember(@PathVariable Community community,
             @PathVariable Member member, @Valid @RequestBody MemberForm form,
             BindingResult bindingResult) {
@@ -77,7 +77,7 @@ public class MemberController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/members/{member}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/communities/{community}/members/{member}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMember(@PathVariable Community community,
             @PathVariable Member member) {
         if (!member.getCommunity().equals(community)) {

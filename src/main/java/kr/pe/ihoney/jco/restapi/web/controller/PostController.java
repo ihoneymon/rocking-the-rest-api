@@ -33,7 +33,7 @@ public class PostController {
     @Autowired
     private MessageSourceAccessor messageSourceAccessor;
 
-    @RequestMapping(value = "/groups/{group}/posts", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/posts", method = RequestMethod.GET)
     public ResponseEntity getPostsOfGroup(@PathVariable Community community,
             PostCondition condition, PageStatus pageStatus) {
         Page<Post> page = postService.getPostsOfGroup(community, condition,
@@ -42,7 +42,7 @@ public class PostController {
                 pageStatus), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/posts", method = RequestMethod.POST)
+    @RequestMapping(value = "/communities/{community}/posts", method = RequestMethod.POST)
     public ResponseEntity savePostOfGroup(@PathVariable Community community,
             @Valid @RequestBody PostForm form, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -53,7 +53,7 @@ public class PostController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/posts/{post}", method = RequestMethod.GET)
     public ResponseEntity getPostOfGroup(@PathVariable Community community,
             @PathVariable Post post) {
         if (!post.getCommunity().equals(community)) {
@@ -63,7 +63,7 @@ public class PostController {
         return new ResponseEntity(postService.getPost(post), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/communities/{community}/posts/{post}", method = RequestMethod.PUT)
     public ResponseEntity modifyPost(@PathVariable Community community,
             @PathVariable Post post, @Valid @RequestBody PostForm form,
             BindingResult bindingResult) {
@@ -77,7 +77,7 @@ public class PostController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/posts/{post}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/communities/{community}/posts/{post}", method = RequestMethod.DELETE)
     public ResponseEntity deletePost(@PathVariable Community community,
             @PathVariable Post post) {
         if (!post.getCommunity().equals(community)) {
@@ -87,7 +87,7 @@ public class PostController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "/groups/{group}/members/{member}/posts", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/members/{member}/posts", method = RequestMethod.GET)
     public ResponseEntity getPostsOfMemberInGroup(@PathVariable Community community,
             @PathVariable Member member, @RequestBody PostCondition condition,
             PageStatus pageStatus) {
@@ -99,7 +99,7 @@ public class PostController {
                 member, condition, pageStatus), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/groups/{group}/members/{member}/posts/{post}", method = RequestMethod.GET)
+    @RequestMapping(value = "/communities/{community}/members/{member}/posts/{post}", method = RequestMethod.GET)
     public ResponseEntity getPostOfMemberInGroup(@PathVariable Community community,
             @PathVariable Member member, @PathVariable Post post) {
         if (!member.getCommunity().equals(community)) {
