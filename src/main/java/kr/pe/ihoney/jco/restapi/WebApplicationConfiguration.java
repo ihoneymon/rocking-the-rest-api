@@ -33,7 +33,7 @@ import java.util.Locale;
 
 /**
  * API 설정 context
- *
+ * 
  * @Configuration: mvc:annotation-driven
  * @EnableAsync: task:annotation-driven
  * @ComponentScan: context:component-scan
@@ -89,8 +89,8 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor())
-                .addPathPatterns(new String[]{"/communities/**", "/users/**", "/posts/**"});
+        registry.addWebRequestInterceptor(openEntityManagerInViewInterceptor()).addPathPatterns(
+                new String[] { "/communities/**", "/users/**", "/posts/**" });
         registry.addWebRequestInterceptor(pageStatusAutoPersistenceInterceptor());
         registry.addInterceptor(webContentInterceptor());
         registry.addInterceptor(localeChangeInterceptor());
@@ -112,7 +112,7 @@ public class WebApplicationConfiguration extends WebMvcConfigurerAdapter {
      * 참조:
      * http://zeroturnaround.com/rebellabs/your-next-java-web-app-less-xml-no
      * -long-restarts-fewer-hassles-part-2/
-     *
+     * 
      * @return
      */
     @Bean

@@ -9,7 +9,6 @@ package kr.pe.ihoney.jco.restapi.common.exception;
 public class RestApiException extends RuntimeException {
     private static final long serialVersionUID = 3658985351012031364L;
 
-    private Integer httpStatus;
     private Object[] messageParams;
 
     public RestApiException(Throwable cause, String message) {
@@ -31,9 +30,5 @@ public class RestApiException extends RuntimeException {
 
     public Object[] getMessageParams() {
         return this.messageParams;
-    }
-
-    public Integer getHttpStatus() {
-        return this.httpStatus;
     }
 }

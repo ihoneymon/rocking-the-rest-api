@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.context.support.MessageSourceAccessor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
@@ -23,9 +24,8 @@ public class RestApiExceptionResolver extends SimpleMappingExceptionResolver {
             Exception ex) {
         String viewName = determineViewName(ex, request);
         log.debug("View Name: {}", viewName);
-        
-        if (viewName != null) {
 
+        if (viewName != null) {
             Integer statusCode = null;
             String message = null;
             if (ex instanceof RestApiException) {
@@ -36,7 +36,7 @@ public class RestApiExceptionResolver extends SimpleMappingExceptionResolver {
                 } catch (NoSuchMessageException nsme) {
                     message = restApiException.getMessage();
                 }
-                statusCode = restApiException.getHttpStatus();
+                statusCode = HttpStatus.INTERNAL_SERVER_ERROR.value();
             } else {
                 message = ex.getMessage();
                 statusCode = determineStatusCode(request, viewName);

@@ -19,7 +19,6 @@ buildscript {
 
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
-apply plugin: 'groovy'
 apply plugin: 'war'
 apply plugin: 'idea'
 apply plugin: 'eclipse-wtp'
@@ -27,10 +26,7 @@ apply plugin: 'tomcat'
 
 version = '1.0'
 
-// In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'maven central' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
 }
 
@@ -171,7 +167,6 @@ configurations {
     querydslapt
 }
 
-//-- QueryDSL
 task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
     source = sourceSets.main.java
     classpath = configurations.compile + configurations.querydslapt
@@ -183,7 +178,6 @@ task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates
     destinationDir = sourceSets.querydsl.java.srcDirs.iterator().next()
     dependencyCacheDir = compileJava.dependencyCacheDir
 }
-//-- QueryDSL
 
 compileJava {
 	sourceCompatibility = javaVersion

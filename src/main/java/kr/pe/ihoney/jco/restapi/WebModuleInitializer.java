@@ -8,10 +8,7 @@ import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatche
 import javax.servlet.Filter;
 
 /**
- * web.xml 대체하기
- * User: ihoneymon
- * Date: 14. 2. 2
- * Time: 오후 1:10
+ * web.xml 대체
  */
 public class WebModuleInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -22,23 +19,28 @@ public class WebModuleInitializer extends AbstractAnnotationConfigDispatcherServ
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[]{ WebApplicationConfiguration.class };
+        return new Class<?>[] { WebApplicationConfiguration.class };
     }
 
     @Override
     protected String[] getServletMappings() {
-        return new String[]{ "/" };
+        return new String[] { "/" };
     }
 
     @Override
     protected Filter[] getServletFilters() {
-        HiddenHttpMethodFilter hiddenHttpMethodFilter = new HiddenHttpMethodFilter();
+        return new Filter[] { getHiddenHttpMethodFilter(), getCharacterEncodingFilter() };
+    }
 
+    private CharacterEncodingFilter getCharacterEncodingFilter() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+    }
 
-        return new Filter[] { hiddenHttpMethodFilter, characterEncodingFilter };
+    private HiddenHttpMethodFilter getHiddenHttpMethodFilter() {
+        return new HiddenHttpMethodFilter();
     }
 
 }
