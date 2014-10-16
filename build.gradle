@@ -58,6 +58,7 @@ ext {
         modelmapper: '0.6.3',
         tomcat: '7.0.50'
     ]
+    gradleVersion= '2.1'
 }
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
@@ -206,4 +207,8 @@ tomcatRunWar {
     stopPort = 8091
     contextPath = ''
     reloadable = true
+}
+
+task wrapper(type: Wrapper) {
+      gradleVersion = "$gradleVersion"
 }
